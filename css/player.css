@@ -21,8 +21,7 @@ main {
     max-width: 100%;
 }
 #reader {
-    width: 100%;
-    max-width: 700px;
+    max-width: fit-content;
     max-height: 50vh;
     margin: auto;
 }
@@ -127,13 +126,19 @@ main {
     background-color: var(--red); /* Change the background color for Microsoft Edge */
   }
 
+  #qr-code {
+    display: flex;
+    flex-direction: column;
+    height: 50vh;
+  }
+
   /*QR CODE*/
   #qr-code img {
     /*center with margins doesn't work on mobile*/
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    height: 40vh;
+    height: 100%;
+    width: auto;
+    aspect-ratio: 1 / 1;  /* defining the aspect ratio of the imaage */
+    object-fit: cover;  
   }
 
   #qr-code p {
