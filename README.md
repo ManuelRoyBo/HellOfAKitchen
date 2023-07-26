@@ -1,5 +1,8 @@
 # HellOfAKitchen
  An IRL cooking game
 
-It is far from working rn.
-I'm still on it as of July 26 2023
+currently WIP and it is far from working rn.
+
+Will be playable via Browser. (100% static and local, no communication via web/sockets/http)
+
+try it at: https://kitchen.manurb.com/
