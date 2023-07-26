@@ -129,7 +129,7 @@ main {
   #qr-code:not(.hidden){
     display: grid;
     grid-template-columns: 50px auto 50px;
-    grid-template-rows: fit-content auto;
+    grid-template-rows: fit-content 20px;
     flex-direction: column;
     height: 49vh;
   }
@@ -139,9 +139,7 @@ main {
     grid-column: 2;
     grid-row: 2;
     /*center with margins doesn't work on mobile*/
-    max-height: 100%;
-    max-width: 100%;
-    height: 100%;
+    height: 60vw;
     aspect-ratio: 1 / 1;  /* defining the aspect ratio of the imaage */
     object-fit: contain;  
     margin: 10px;
