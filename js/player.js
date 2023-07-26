@@ -38,7 +38,7 @@ function generateUniqueQrCode(content) {
 function newScanner() {
     scanner = new Html5QrcodeScanner('reader', { 
         // Scanner will be initialized in DOM inside element with id of 'reader'
-        qrbox: 500,
+        qrbox: 1250,
         fps: 20, // Frames per second to attempt a scan
     });
   scanner.render(success, error);
@@ -176,7 +176,7 @@ class Game {
   static displayStartScreen() {
     Utility.hideIfNotHidden(trashDiv);
     Utility.hideIfNotHidden(cuttingBoardDiv);
-    //Utility.hideIfNotHidden(qrCodeDiv);
+    Utility.hideIfNotHidden(qrCodeDiv);
     Utility.hideIfNotHidden(itemDiv);
 
     newScannerIfNotExists();
