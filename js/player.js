@@ -1,4 +1,6 @@
 "use strict";
+import {items} from "./items.js";
+
 let scanner;
 let currentItem = null;
 let currentProcess = null;
@@ -147,44 +149,6 @@ class CuttingBoard {
     }
   }
 }
-
-
-/* #region Items */
-class Item {
-  constructor(itemName, description, imageUrl, qrCodeId = null, cutEquivalent = null, grilledEquivalent = null, finalFormQrId = null) {
-    this.itemName = itemName;
-    this.description = description;
-    this.imageUrl = imageUrl;
-    this.qrCodeId = qrCodeId;
-    this.cutEquivalent = cutEquivalent;
-    this.grilledEquivalent = grilledEquivalent;
-    this.finalFormQrId = finalFormQrId;
-  }
-}
-
-const cutLettuce = new Item(
-  "Cut lettuce",
-  "A piece of cut lettuce.",
-  "img/lettuce-leaf.svg",
-  null,
-  null,
-  null,
-  "CL"
-);
-
-const lettuce = new Item(
-  "Lettuce",
-  "A piece of lettuce.",
-  "img/lettuce.svg",
-  "IL",
-  cutLettuce,
-  null,
-  null
-);
-
-const items = [lettuce, cutLettuce];
-
-/* #endregion */
 
 
 class Utility {
