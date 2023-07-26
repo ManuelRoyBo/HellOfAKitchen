@@ -1,5 +1,6 @@
 "use strict";
 import {items} from "./items.js";
+console.log(items);
 
 let scanner;
 let currentItem = null;

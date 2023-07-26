@@ -31,7 +31,7 @@ const lettuce = new Item(
 );
 
 const cutTomato = new Item(
-    "Sliced",
+    "Sliced tomato",
     "A piece of cut tomato.",
     "img/sliced-tomato.svg",
     null,
@@ -50,10 +50,36 @@ const tomato = new Item(
     null
 );
 
+const cookedGroundBeef = new Item(
+    "Cooked ground beef",
+    "Very tasty.",
+    "img/cooked-ground-beef.jpg",
+    null,
+    null,
+    null,
+    "CGB"
+);
 
+const groundBeef = new Item(
+    "Ground beef",
+    "Can be grilled.",
+    "img/ground-beef.png",
+    null,
+    null,
+    cookedGroundBeef,
+    null
+);
 
-
+const beef = new Item(
+    "Beef",
+    "Can be cut.",
+    "img/beef.svg",
+    "beef",
+    groundBeef,
+    null,
+    null
+);
   
-export const items = [lettuce, cutLettuce, tomato, cutTomato];
+export const items = [lettuce, cutLettuce, tomato, cutTomato, beef, groundBeef, cookedGroundBeef];
 
   
