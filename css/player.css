@@ -7,7 +7,7 @@
 }
 
 body {
-    background-color: #2e2e2e;
+    background-color: #f5f5f5;
     font-size: var(--text-size);
     margin: auto;
     max-width: 100%;
@@ -23,7 +23,7 @@ main {
 #reader {
     max-width: fit-content;
     max-height: 50vh;
-    margin: 0;
+    margin: auto;
 }
 
 #reader video {
@@ -135,8 +135,9 @@ main {
   /*QR CODE*/
   #qr-code img {
     /*center with margins doesn't work on mobile*/
-    height: 90%;
-    width: auto;
+    max-height: 90%;
+    max-width: 90%;
+    margin: 50px;
     aspect-ratio: 1 / 1;  /* defining the aspect ratio of the imaage */
     object-fit: contain;  
   }

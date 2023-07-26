@@ -176,7 +176,7 @@ class Game {
   static displayStartScreen() {
     Utility.hideIfNotHidden(trashDiv);
     Utility.hideIfNotHidden(cuttingBoardDiv);
-    Utility.hideIfNotHidden(qrCodeDiv);
+    //Utility.hideIfNotHidden(qrCodeDiv);
     Utility.hideIfNotHidden(itemDiv);
 
     newScannerIfNotExists();
