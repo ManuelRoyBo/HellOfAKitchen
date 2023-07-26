@@ -76,5 +76,5 @@ const beef = new Item(
     groundBeef,
 );
   
-export const items = [lettuce, cutLettuce, tomato, cutTomato, beef, groundBeef];//, cookedGroundBeef];
+export const items = [lettuce, cutLettuce, tomato, cutTomato, beef, groundBeef, cookedGroundBeef];
   
