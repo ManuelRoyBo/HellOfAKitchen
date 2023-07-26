@@ -45,8 +45,17 @@ function newScanner() {
         },  // Sets dimensions of scanning box (set relative to reader element width)
         fps: 20, // Frames per second to attempt a scan
     });
-
   scanner.render(success, error);
+}
+
+function newScannerIfNotExists() {
+  try {
+    if (scanner.getState() != 2) { //2 is scanning
+      newScanner();
+    }
+  } catch (error) {
+    newScanner();
+  }
 }
 
 
@@ -66,9 +75,10 @@ function success(result) {
 
   else {
     for (const item of items) {
-      if (item.qrCodeId === result) {
+      if (item.qrCodeId === result && (currentItem === null || currentItem.qrCodeId !== result)) {
         currentItem = item;
         displayItemInfo(item);
+        Game.displayItemScreen();
         return;
       }
     }
@@ -84,8 +94,6 @@ function displayItemInfo(item) {
   itemNameElement.textContent = item.itemName;
   itemDescriptionElement.textContent = item.description; // Use the item's description here
   itemImageElement.src = item.imageUrl;
-
-  Utility.showIfHidden(itemDiv);
 }
 
 
@@ -142,7 +150,8 @@ class CuttingBoard {
     displayItemInfo(currentItem);
 
     if (this.progress >= this.maxProgress) {
-      if (currentItem.finalFormQrId != null) {
+      console.log(currentItem);
+      if (currentItem.finalFormQrId !== null) {
         Game.displayGiveItemScreen();
       } else {
         Game.displayItemScreen();
@@ -174,14 +183,17 @@ class Game {
     Utility.hideIfNotHidden(qrCodeDiv);
     Utility.hideIfNotHidden(itemDiv);
 
-    newScanner();
+    newScannerIfNotExists();
+    
   }
   static displayItemScreen() {
     Utility.showIfHidden(trashDiv);
+    Utility.showIfHidden(itemDiv);
     Utility.hideIfNotHidden(cuttingBoardDiv);
     Utility.hideIfNotHidden(qrCodeDiv);
-  }
 
+    newScannerIfNotExists();
+  }
   static displayCuttingBoardScreen() {
     Utility.showIfHidden(trashDiv);
     Utility.showIfHidden(cuttingBoardDiv);
