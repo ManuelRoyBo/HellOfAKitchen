@@ -1,5 +1,5 @@
 export class Item {
-    constructor(itemName, description, imageUrl, qrCodeId = null, cutEquivalent = null, grilledEquivalent = null, finalFormQrId = null) {
+    constructor(itemName, description, imageUrl, qrCodeId = null, cutEquivalent = null, grilledEquivalent = null, finalFormQrId = null, oddsOfBeingInABurger = null) {
       this.itemName = itemName;
       this.description = description;
       this.imageUrl = imageUrl;
@@ -17,7 +17,8 @@ const cutLettuce = new Item(
     null,
     null,
     null,
-    "CL"
+    "CL",
+    0.5
 );
 
 const lettuce = new Item(
@@ -25,9 +26,7 @@ const lettuce = new Item(
     "A piece of lettuce.",
     "img/lettuce.svg",
     "IL",
-    cutLettuce,
-    null,
-    null
+    cutLettuce
 );
 
 const cutTomato = new Item(
@@ -37,7 +36,8 @@ const cutTomato = new Item(
     null,
     null,
     null,
-    "CT"
+    "CT",
+    0.5
 );
 
 const tomato = new Item(
@@ -46,8 +46,6 @@ const tomato = new Item(
     "img/tomato.svg",
     "tomato",
     cutTomato,
-    null,
-    null
 );
 
 const cookedGroundBeef = new Item(
@@ -57,7 +55,8 @@ const cookedGroundBeef = new Item(
     null,
     null,
     null,
-    "CGB"
+    "CGB",
+    0.9
 );
 
 const groundBeef = new Item(
@@ -67,7 +66,6 @@ const groundBeef = new Item(
     null,
     null,
     cookedGroundBeef,
-    null
 );
 
 const beef = new Item(
@@ -76,10 +74,7 @@ const beef = new Item(
     "img/beef.svg",
     "beef",
     groundBeef,
-    null,
-    null
 );
   
-export const items = [lettuce, cutLettuce, tomato, cutTomato, beef, groundBeef, cookedGroundBeef];
-
+export const items = [lettuce, cutLettuce, tomato, cutTomato, beef, groundBeef];//, cookedGroundBeef];
   

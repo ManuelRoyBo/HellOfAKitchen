@@ -1,4 +1,3 @@
-"use strict";
 import {items} from "./items.js";
 console.log(items);
 

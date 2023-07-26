@@ -36,3 +36,26 @@ main {
     background-color: #f9f9f9;
     border: 1px solid silver;
 }
+.game {
+    grid-column: 2;
+    grid-row-start: 1;
+    grid-row-end: 3;
+}
+
+.burger {
+    display:flex;
+    flex-direction: column;
+    width: 40%;
+    height: 100%;
+}
+
+.burger .ingredient {
+    flex: 1;
+    overflow: hidden;
+    width: auto;
+    margin: auto;
+}
+
+.silouhette {
+    filter: brightness(25%);
+}
