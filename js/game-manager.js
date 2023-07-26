@@ -14,8 +14,8 @@ function newScanner() {
     scanner = new Html5QrcodeScanner('reader', { 
         // Scanner will be initialized in DOM inside element with id of 'reader'
         qrbox: {
-            width: 400,
-            height: 400
+            width: 600,
+            height: 600
         },  // Sets dimensions of scanning box (set relative to reader element width)
         fps: 20, // Frames per second to attempt a scan
     });
@@ -26,6 +26,7 @@ function newScanner() {
 newScanner();
 
 function success(result) {
+    console.log(result + " scanned");
     if (alreadyScanned.includes(result)) {return;}
 
     const id = result.slice(0, 2);

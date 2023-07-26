@@ -129,7 +129,10 @@ main {
 
   /*QR CODE*/
   #qr-code img {
-    margin: auto;
+    /*center with margins doesn't work on mobile*/
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     height: 40vh;
   }
 
