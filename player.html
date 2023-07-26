@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HellOfAKitchen</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Teko">
+    <link rel="stylesheet" href="css/player.css"/>
+    <link rel="stylesheet" href="css/app.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.4/html5-qrcode.min.js" integrity="sha512-k/KAe4Yff9EUdYI5/IAHlwUswqeipP+Cp5qnrsUjTPCgl51La2/JhyyjNciztD7mWNKLSXci48m7cctATKfLlQ==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="js/object.js" defer></script>
+    <script src="js/player.js" defer></script>
+</head>
+<body>
+    <main>
+        <div id="reader" class=""></div>
+
+        <div class="hidden" id="qr-code">
+            <p>Scan the QR code at the assembling station</p>
+        </div>
+
+        <div class="food-process hidden" id="cutting-board">
+            <h1>Cutting Board</h1>
+            <p>Tap on your item to slice it</p>
+            <progress id="cutting-board-progress-bar" class="progress-bar" value="0" max="10"></progress>
+        </div>
+        
+        <div class="item hidden" id="item">
+            <h1></h1>
+            <p class="description"></p>
+            <img src="" alt="">
+        </div>
+
+        <div class="trash hidden" id="trash">
+            <button id="trash-button">Throw in the trash</button>
+        </div>
+    </main>
+</body>
+</html>

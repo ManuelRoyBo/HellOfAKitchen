@@ -1,0 +1,140 @@
+:root {
+    --text-size: 5vw;
+
+    @media screen and (min-width: 768px) {
+        --text-size: 1.5rem;
+    }
+}
+
+body {
+    background-color: #f9f9f9;
+    font-size: var(--text-size);
+    margin: auto;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+main {
+    flex-direction: column;
+    margin: 0;
+    gap: 0;
+    max-width: 100%;
+}
+#reader {
+    width: 100%;
+    max-width: 700px;
+    max-height: 50vh;
+    margin: auto;
+}
+
+#reader video {
+    max-height: 38vh;
+}
+
+#reader button {
+    max-width: fit-content;
+}
+#reader select {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+}
+
+#html5-qrcode-anchor-scan-type-change {
+    visibility: hidden;
+}
+
+
+
+/*game*/
+
+.item {
+    height: 50vh;
+}
+
+.item h1,
+.item p {
+    text-align: center;
+    margin: 0;
+}
+
+.item img {
+    max-width: 100%;
+    max-height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    height: auto;
+    width: auto;
+    display: block;
+}
+
+/*trash*/
+.trash {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    margin: 0 auto;
+}
+
+/*cutting*/
+#cutting-board {
+    margin: 10px;
+}
+
+#cutting-board h1,
+#cutting-board p {
+    text-align: center;
+    margin: 0;
+}
+  /* Style the progress bar */
+  .progress-bar {
+    width: 75%;
+    margin: auto;
+    display: block;
+    height: var(--button-height); /* Adjust the height as needed */
+    border: 2px solid #ccc; /* Optional: Add a border around the progress bar */
+    border-radius: 6px; /* Optional: Add rounded corners */
+  }
+  /* Optional: Style the container to control the width of the progress bar */
+.progress-container {
+    width: 300px;
+  }
+  /* Customize the appearance of the progress bar fill */
+  .progress-bar::-webkit-progress-value {
+    background-color: var(--green-progress); /* Change the fill color for WebKit browsers (Safari, Chrome) */
+  }
+  
+  .progress-bar::-moz-progress-bar {
+    background-color: var(--green-progress); /* Change the fill color for Mozilla Firefox */
+  }
+  
+  .progress-bar::-ms-fill {
+    background-color: var(--green-progress); /* Change the fill color for Microsoft Edge */
+  }
+
+  /* Customize the appearance of the progress bar background */
+.progress-bar::-webkit-progress-bar {
+    background-color: var(--red); /* Change the background color for WebKit browsers (Safari, Chrome) */
+  }
+  
+  .progress-bar::-moz-progress-bar {
+    background-color: var(--red); /* Change the background color for Mozilla Firefox */
+  }
+  
+  .progress-bar::-ms-fill {
+    background-color: var(--red); /* Change the background color for Microsoft Edge */
+  }
+
+  /*QR CODE*/
+  #qr-code img {
+    margin: auto;
+    height: 40vh;
+  }
+
+  #qr-code p {
+    text-align: center;
+    margin: 0;
+  }
+  
