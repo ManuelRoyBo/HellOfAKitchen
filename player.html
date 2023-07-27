@@ -27,6 +27,21 @@
             <p>Tap on your item to slice it</p>
             <progress id="cutting-board-progress-bar" class="progress-bar" value="0" max="10"></progress>
         </div>
+
+        <div class="food-process hidden" id="grill">
+            <h1>Grill</h1>
+            <p>Tap to change cooking side.</p>
+
+            <div class="grill-progress">
+                <p id="grill-progress-side-1">{side1%}</p>
+                <progress id="grill-progress-bar-side-1" class="progress-bar" value="0" max="100"></progress>
+            </div>
+
+            <div class="grill-progress">
+                <p id="grill-progress-side-2">{side2%}</p>
+                <progress id="grill-progress-bar-side-2" class="progress-bar" value="0" max="100"> hello</progress>
+            </div>
+        </div>
         
         <div class="item hidden" id="item">
             <h1></h1>

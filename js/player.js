@@ -12,6 +12,13 @@ let qrCode = new QRCode(qrCodeDiv, "");
 const trashDiv = document.getElementById("trash");
 const cuttingBoardDiv = document.getElementById("cutting-board");
 const cuttingBoardProgressbar = document.getElementById("cutting-board-progress-bar");
+
+const grillDiv = document.getElementById("grill");
+const grillProgressSide1 = document.getElementById("grill-progress-side-1");
+const grillProgressbarSide1 = document.getElementById("grill-progress-bar-side-1");
+const grillProgressSide2 = document.getElementById("grill-progress-side-2");
+const grillProgressbarSide2 = document.getElementById("grill-progress-bar-side-2");
+
 const itemDiv = document.getElementById("item");
 
 function generateUUID() { // Public Domain/MIT
@@ -57,32 +64,31 @@ function newScannerIfNotExists() {
   }
 }
 
-
-
 function success(result) {
-  // Check if the result matches any item's qrCodeId
-  
-  
   console.log(result + " scanned");
 
-  if (result === "cutting-board" && currentItem !== null && currentItem.cutEquivalent !== null) {
-    currentProcess = cuttingBoard;
+  if (result === "cutting-board" && currentItem !== null && currentItem.cutEquivalent !== null && currentProcess !== cuttingBoard)   {
+    endAllProcesses();
     cuttingBoard.start();
-    Game.displayCuttingBoardScreen();
+    currentProcess = cuttingBoard;
     return;
   }
 
-  else {
-    for (const item of items) {
-      if (item.qrCodeId === result && (currentItem === null || currentItem.qrCodeId !== result)) {
-        currentItem = item;
-        displayItemInfo(item);
-        Game.displayItemScreen();
-        return;
-      }
+  if (result === "grill" && currentItem !== null && currentItem.grilledEquivalent !== null && currentProcess !== grill) {
+    endAllProcesses();
+    grill.start();
+    currentProcess = grill;
+    return;
+  }
+
+  for (const item of items) {
+    if (item.qrCodeId === result && (currentItem === null || currentItem.qrCodeId !== result)) {
+      currentItem = item;
+      displayItemInfo(item);
+      Game.displayItemScreen();
+      return;
     }
   }
-  
 }
 
 function displayItemInfo(item) {
@@ -95,9 +101,7 @@ function displayItemInfo(item) {
   itemImageElement.src = item.imageUrl;
 }
 
-
 function error(err) {} //Qr scan didn't find anything
-
 
 //trash
 const trashButton = document.getElementById("trash-button");
@@ -106,8 +110,13 @@ trashButton.addEventListener("click", trashItem);
 function trashItem() {
   currentItem = null;
   currentProcess = null;
-  cuttingBoard.end();
+  endAllProcesses();
   Game.displayStartScreen();
+}
+
+function endAllProcesses() {
+  cuttingBoard.end();
+  grill.end();
 }
 
 class CuttingBoard {
@@ -118,6 +127,7 @@ class CuttingBoard {
   }
 
   start() {
+    Game.displayCuttingBoardScreen();
     this.isOn = true;
     this.maxProgress = 10;
     cuttingBoardProgressbar.max = this.maxProgress;
@@ -139,26 +149,88 @@ class CuttingBoard {
     this.setProgress();
 
     if (this.progress >= this.maxProgress) {
-      currentItem = currentItem.cutEquivalent;
-      this.end();
       this.cutSuccess();
     }
   }
 
   cutSuccess() {
+    currentItem = currentItem.cutEquivalent;
+    this.end();
     displayItemInfo(currentItem);
-
-    if (this.progress >= this.maxProgress) {
-      console.log(currentItem);
-      if (currentItem.finalFormQrId !== null) {
-        Game.displayGiveItemScreen();
-      } else {
-        Game.displayItemScreen();
-      }
-    }
+    Game.displayItemOrGiveScreen();
   }
 }
 
+class Grill {
+  constructor() {
+    this.itemImg = itemDiv.querySelector("img");
+    this.itemImg.addEventListener("click", () => this.flip());
+
+    this.cookSpeed = 9; // i/s
+
+    //set primarySideCookSPeed to a random number 0.9-1.2
+    this.primarySideCookSpeed = 0.9 + Math.random() * 0.3;
+    this.secondarySideCookSpeed = 1.5 - this.primarySideCookSpeed; // percentage of cooikSpeed
+    
+    this.isFliped = false;
+    this.sideOneProgress = 0;
+    this.sideTwoProgress = 0;
+
+    this.isOn = false;
+    this.intervalId = null;
+  }
+
+  start() {
+    this.isOn = true;
+    this.intervalId = setInterval(() => this.cook(), 1000 / this.cookSpeed);
+    Game.displayGrillScreen();
+  }
+
+  end() {
+    this.isOn = false;
+    clearInterval(this.intervalId);
+  }
+
+  cook() {
+    //will be called every iteration
+    if (!this.isOn) return;
+
+    if (!this.isFliped) {
+      this.sideOneProgress += this.primarySideCookSpeed;
+      this.sideTwoProgress += this.secondarySideCookSpeed;
+    }
+    else {
+      this.sideOneProgress += this.secondarySideCookSpeed;
+      this.sideTwoProgress += this.primarySideCookSpeed;
+    }
+
+    this.updateVisuals();
+
+    if (this.sideOneProgress >= 100 && this.sideTwoProgress >= 100) {
+      this.grillSuccess();
+    }
+
+  }
+
+  updateVisuals() {
+    grillProgressbarSide1.value = this.sideOneProgress;
+    grillProgressbarSide2.value = this.sideTwoProgress;
+
+    grillProgressSide1.textContent = Math.round(this.sideOneProgress) + "%";
+    grillProgressSide2.textContent = Math.round(this.sideTwoProgress) + "%";
+  }
+
+  flip() {
+    this.isFliped = !this.isFliped;
+  }
+
+  grillSuccess() {
+    currentItem = currentItem.grilledEquivalent;
+    this.end();
+    displayItemInfo(currentItem);
+    Game.displayItemOrGiveScreen();
+  }
+}
 
 class Utility {
   static hideIfNotHidden(element) {
@@ -174,44 +246,79 @@ class Utility {
   }
 }
 
-
 class Game {
   static displayStartScreen() {
+    this.hideProcesses();
+
     Utility.hideIfNotHidden(trashDiv);
-    Utility.hideIfNotHidden(cuttingBoardDiv);
     Utility.hideIfNotHidden(qrCodeDiv);
     Utility.hideIfNotHidden(itemDiv);
 
+    Game.hideProcesses();
     newScannerIfNotExists();
     
   }
   static displayItemScreen() {
+    this.hideProcesses();
+
     Utility.showIfHidden(trashDiv);
     Utility.showIfHidden(itemDiv);
-    Utility.hideIfNotHidden(cuttingBoardDiv);
     Utility.hideIfNotHidden(qrCodeDiv);
 
     newScannerIfNotExists();
   }
   static displayCuttingBoardScreen() {
+    this.hideProcesses();
+
     Utility.showIfHidden(trashDiv);
     Utility.showIfHidden(cuttingBoardDiv);
     Utility.hideIfNotHidden(qrCodeDiv);
+    Utility.showIfHidden(itemDiv);
+
 
     scanner.clear();
+  }
+
+  static displayGrillScreen() {
+    this.hideProcesses();
+
+    Utility.showIfHidden(trashDiv);
+    Utility.hideIfNotHidden(qrCodeDiv);
+    Utility.showIfHidden(grillDiv);
+    Utility.showIfHidden(itemDiv);
+
+    try{scanner.clear();}
+    catch(error){}
   }
 
   static displayGiveItemScreen() {
+    this.hideProcesses();
     generateUniqueQrCode(currentItem.finalFormQrId);
 
     Utility.showIfHidden(trashDiv);
-    Utility.hideIfNotHidden(cuttingBoardDiv);
     Utility.showIfHidden(qrCodeDiv);
 
-    scanner.clear();
+    try{scanner.clear();}
+    catch(error){}
   }
+
+  static hideProcesses() {
+    Utility.hideIfNotHidden(cuttingBoardDiv);
+    Utility.hideIfNotHidden(grillDiv);
+  }
+
+  static displayItemOrGiveScreen() {
+    console.log(currentItem);
+    if (currentItem.finalFormQrId !== null) {
+      Game.displayGiveItemScreen();
+    } else {
+      Game.displayItemScreen();
+    }
+  }
+
 }
 
 //Code
 const cuttingBoard = new CuttingBoard();
+const grill = new Grill();
 Game.displayStartScreen();

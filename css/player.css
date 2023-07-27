@@ -82,11 +82,18 @@ main {
     margin: 10px;
 }
 
-#cutting-board h1,
-#cutting-board p {
+.food-process h1,
+.food-process p {
     text-align: center;
     margin: 0;
 }
+
+/*grill*/
+.grill-progress {
+  margin-top: 20px;
+}
+
+
   /* Style the progress bar */
   .progress-bar {
     width: 75%;
