@@ -7,7 +7,7 @@
 }
 
 body {
-    background-color: #f9f9f9;
+    background-color: #f5f5f5;
     font-size: var(--text-size);
     margin: auto;
     max-width: 100%;
@@ -21,8 +21,7 @@ main {
     max-width: 100%;
 }
 #reader {
-    width: 100%;
-    max-width: 700px;
+    max-width: fit-content;
     max-height: 50vh;
     margin: auto;
 }
@@ -129,10 +128,13 @@ main {
 
   /*QR CODE*/
   #qr-code img {
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
     padding: 30px;
     max-height: 40vh;
     max-width: 80vw;
+    aspect-ratio: 1 / 1; 
+    object-fit: contain;
   }
 
   #qr-code p {
