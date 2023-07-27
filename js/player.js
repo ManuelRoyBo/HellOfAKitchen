@@ -7,7 +7,7 @@ let currentProcess = null;
 let cutting
 
 let qrCodeDiv = document.getElementById("qr-code");
-let qrCode = new QRCode(qrCodeDiv, "safqwreaawesd");
+let qrCode = new QRCode(qrCodeDiv, "");
 
 const trashDiv = document.getElementById("trash");
 const cuttingBoardDiv = document.getElementById("cutting-board");
@@ -179,7 +179,7 @@ class Game {
   static displayStartScreen() {
     Utility.hideIfNotHidden(trashDiv);
     Utility.hideIfNotHidden(cuttingBoardDiv);
-    //Utility.hideIfNotHidden(qrCodeDiv);
+    Utility.hideIfNotHidden(qrCodeDiv);
     Utility.hideIfNotHidden(itemDiv);
 
     newScannerIfNotExists();
