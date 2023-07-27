@@ -126,15 +126,16 @@ main {
     background-color: var(--red); /* Change the background color for Microsoft Edge */
   }
 
+  #qr-code {
+    border : 30px solid #f5f5f5;
+  }
   /*QR CODE*/
   #qr-code img {
     margin-left: auto;
     margin-right: auto;
     max-height: 40vh;
     max-width: 80vw;
-    aspect-ratio: 1 / 1; 
     object-fit: contain;
-    border : 30px solid #f5f5f5;
   }
 
   #qr-code p {
