@@ -55,8 +55,8 @@ const cookedGroundBeef = new Item(
     null,
     null,
     null,
-    "CGB",
-    0.9
+    "CG",
+    0.9,
 );
 
 const groundBeef = new Item(

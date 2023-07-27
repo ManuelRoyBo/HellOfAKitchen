@@ -181,6 +181,8 @@ class Grill {
   }
 
   start() {
+    this.sideOneProgress = 0;
+    this.sideTwoProgress = 0;
     this.isOn = true;
     this.intervalId = setInterval(() => this.cook(), 1000 / this.cookSpeed);
     Game.displayGrillScreen();
