@@ -7,7 +7,7 @@ let currentProcess = null;
 let cutting
 
 let qrCodeDiv = document.getElementById("qr-code");
-let qrCode = new QRCode(qrCodeDiv, "");
+let qrCode = new QRCode(qrCodeDiv, "safqwreaawesd");
 
 const trashDiv = document.getElementById("trash");
 const cuttingBoardDiv = document.getElementById("cutting-board");
@@ -17,7 +17,7 @@ const itemDiv = document.getElementById("item");
 function generateUUID() { // Public Domain/MIT
   var d = new Date().getTime();//Timestamp
   var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
-  return 'xxxxxxx'.replace(/[xy]/g, function(c) {
+  return 'xxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = Math.random() * 16;//random number between 0 and 16
       if(d > 0){//Use timestamp until depleted
           r = (d + r)%16 | 0;
@@ -38,7 +38,10 @@ function generateUniqueQrCode(content) {
 function newScanner() {
     scanner = new Html5QrcodeScanner('reader', { 
         // Scanner will be initialized in DOM inside element with id of 'reader'
-        qrbox: 1250,
+        qrbox: {
+            width: 400,
+            height: 400,
+        },  // Sets dimensions of scanning box (set relative to reader element width)
         fps: 20, // Frames per second to attempt a scan
     });
   scanner.render(success, error);
@@ -176,7 +179,7 @@ class Game {
   static displayStartScreen() {
     Utility.hideIfNotHidden(trashDiv);
     Utility.hideIfNotHidden(cuttingBoardDiv);
-    Utility.hideIfNotHidden(qrCodeDiv);
+    //Utility.hideIfNotHidden(qrCodeDiv);
     Utility.hideIfNotHidden(itemDiv);
 
     newScannerIfNotExists();
