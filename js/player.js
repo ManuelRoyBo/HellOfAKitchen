@@ -9,6 +9,8 @@ let cutting
 let qrCodeDiv = document.getElementById("qr-code");
 let qrCode = new QRCode(qrCodeDiv, "");
 
+const qrScanVideo = document.querySelector("#reader__scan_region > video");
+
 const trashDiv = document.getElementById("trash");
 const cuttingBoardDiv = document.getElementById("cutting-board");
 const cuttingBoardProgressbar = document.getElementById("cutting-board-progress-bar");
@@ -42,13 +44,20 @@ function generateUniqueQrCode(content) {
   qrCode.makeCode(content+uuid);
 }
 
+let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
+  let minEdgePercentage = 0.96;
+  let qrboxSizeWidth = viewfinderWidth * minEdgePercentage;
+  let qrboxSizeHeight = viewfinderHeight * minEdgePercentage;
+  return {
+      width: qrboxSizeWidth,
+      height: qrboxSizeHeight
+  };
+}
+
 function newScanner() {
     scanner = new Html5QrcodeScanner('reader', { 
         // Scanner will be initialized in DOM inside element with id of 'reader'
-        qrbox: {
-            width: 400,
-            height: 400,
-        },  // Sets dimensions of scanning box (set relative to reader element width)
+        qrbox: qrboxFunction,  // Sets dimensions of scanning box (set relative to reader element width)
         fps: 20, // Frames per second to attempt a scan
     });
   scanner.render(success, error);
