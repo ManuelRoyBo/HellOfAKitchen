@@ -55,11 +55,10 @@ let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
 }
 
 function newScanner() {
-    scanner = new Html5QrcodeScanner('reader', { 
-        // Scanner will be initialized in DOM inside element with id of 'reader'
-        qrbox: qrboxFunction,  // Sets dimensions of scanning box (set relative to reader element width)
-        fps: 20, // Frames per second to attempt a scan
-    });
+    scanner = new Html5QrcodeScanner(
+      "reader",
+      { fps: 10, qrbox: qrboxFunction },
+      /* verbose= */ false);
   scanner.render(success, error);
 }
 
