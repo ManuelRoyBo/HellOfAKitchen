@@ -74,6 +74,8 @@ class Burger {
         this.size = size;
         this.burgerId = getBurgerId();
         this.generateRandomBurger();
+        this.nextIngredientToAdd = null;
+        this.nextIngredientToAddId = 0;
     }
 
     setSize(size) {
@@ -97,8 +99,9 @@ class Burger {
 
     generateBurgerHtml() {
         let burgerHtml = "";
-        for (const ingredient of this.burger) {
-            burgerHtml += `<img class="ingredient" src="${ingredient.imageUrl}" alt="${ingredient.name}">`;
+        for (let i = 0; i < this.burger.length; i++) {
+            let ingredient = this.burger[i];
+            burgerHtml += `<img class="ingredient" id="${this.burgerId}-${i}" src="${ingredient.imageUrl}" alt="${ingredient.name}">`;
         }
         return burgerHtml;
     }
@@ -120,40 +123,85 @@ class Burger {
     }
 
     addCommingOrder() {
-        console.log(ordersDiv.innerHTML);
         ordersDiv.innerHTML += this.generateCommingOrderHtml();
     }
 
+    removeCommingOrder() {
+        const order = document.getElementById(`burger${this.burgerId}`);
+        order.remove();
+    }
 
+
+    addSilouhetteToEveryIngredient() {
+        //get all ingredients with the id of the burger
+        const ingredients = document.querySelectorAll(`[id^="${this.burgerId}-"]`);
+        ingredients.forEach(ingredient => {
+            ingredient.classList.add("silouhette");
+        });
+    }
+
+    removeSilouhetteFromIngredient(ingredientId) {
+        const ingredient = document.getElementById(this.burgerId+"-"+ingredientId);
+        ingredient.classList.remove("silouhette");
+    }
+
+    addHiddenClassToEveryIngredient() {
+        //get all ingredients with the id of the burger
+        const ingredients = document.querySelectorAll(`[id^="${this.burgerId}-"]`);
+        ingredients.forEach(ingredient => {
+            ingredient.classList.add("hidden");
+        });
+    }
+
+    removeHiddenClassFromIngredient(ingredientId) {
+        const ingredient = document.getElementById(this.burgerId+"-"+ingredientId);
+        ingredient.classList.remove("hidden");
+    }   
+
+    showNextIngredient() {
+        this.removeHiddenClassFromIngredient(this.nextIngredientToAddId);
+        this.nextIngredientToAdd = this.burger[this.nextIngredientToAddId];
+    }
+
+
+    //Game stuff
+    setCurrentOrder() {
+        currentOrderDiv.innerHTML = this.generateBurgerHtml();
+        this.addSilouhetteToEveryIngredient();
+        this.addHiddenClassToEveryIngredient();
+        this.showNextIngredient();
+    }
 
     addIngredientIfAvailable(ingredientToAdd) {
-        for (let i = 0; i < this.burger.length; i++) {
-            if (this.burger[i] == ingredientToAdd && !this.hasIngredients[i]) {
-                console.log("ingredient added");
-                this.hasIngredients[i] = true;
+        if (this.nextIngredientToAdd == ingredientToAdd) {
+            console.log("ingredient added");
+            this.hasIngredients[this.nextIngredientToAddId] = true;
 
-                //REMOVE SILHOUETTE CLASS from respective ingredient
-                const ingredients = document.querySelectorAll(".ingredient");
-                ingredients[i].classList.remove("silouhette");
-
-                return true;
-            }
+            this.removeSilouhetteFromIngredient(this.nextIngredientToAddId);
+            this.nextIngredientToAddId++;
+            this.showNextIngredient();
+            this.isBurgerComplete();
+            return true;
         }
         return false;
     }
+
+    isBurgerComplete() {
+        return this.hasIngredients.every(hasIngredient => hasIngredient);
+    }        
 }
 
-let burger = new Burger(ingredients, 8);
-currentOrderDiv.innerHTML = burger.generateBurgerHtml();
+let burgers = [
+    new Burger(ingredients, 3),
+    new Burger(ingredients, 3),
+    new Burger(ingredients, 3),
+    new Burger(ingredients, 3),
+]
 
-
-//For testing only. remove later
-let commingBurger = new Burger(ingredients, 5);
-commingBurger.addCommingOrder();
-
-//For testing only. remove later
-new Burger(ingredients, 8).addCommingOrder();
-new Burger(ingredients, 2).addCommingOrder();
+burgers[0].setCurrentOrder();
+burgers[1].addCommingOrder();
+burgers[2].addCommingOrder();
+burgers[3].addCommingOrder();
 
 
 
