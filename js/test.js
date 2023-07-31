@@ -22,6 +22,9 @@ let currentItem = null;
 let currentProcess = null;
 let cutting
 
+let qrCodeDiv = document.getElementById("qr-code");
+let qrCode = new QRCode(qrCodeDiv, "");
+
 
 const qrScanVideo = document.querySelector("#reader__scan_region > video");
 
