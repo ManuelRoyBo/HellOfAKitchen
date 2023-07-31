@@ -77,6 +77,9 @@ function newScannerIfNotExists() {
 function success(result) {
   console.log(result + " scanned");
 
+let textP = document.getElementById("text");
+textP.textContent = result;
+
   if (result === "cutting-board" && currentItem !== null && currentItem.cutEquivalent !== null && currentProcess !== cuttingBoard)   {
     endAllProcesses();
     cuttingBoard.start();
