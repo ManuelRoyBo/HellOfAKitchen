@@ -6,8 +6,9 @@ body {
 
 main {
     display: grid;
-    grid-template-columns: 30vw 70vw;
+    grid-template-columns: 30vw 15vw auto;
     grid-template-rows: 50vh 50vh;
+    column-gap: 50px;
     
 }
 
@@ -26,7 +27,7 @@ main {
     max-height: 100%;
 }
 
-.game-control {
+.game-controls {
     grid-column: 1;
     grid-row: 2;
     width: 100%;
@@ -42,20 +43,53 @@ main {
     grid-row-end: 3;
 }
 
-.burger {
-    display:flex;
-    flex-direction: column;
-    width: 40%;
-    height: 100%;
-}
-
-.burger .ingredient {
-    flex: 1;
-    overflow: hidden;
-    width: auto;
+.current-order {
+    grid-column: 2;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    display: grid;
+    width: 100%;
+    grid-template-rows: repeat(8, 5vw);
+    overflow-y: visible;
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
     margin: auto;
 }
 
-.silouhette {
-    filter: brightness(25%);
+.current-order .ingredient {
+    width: 100%;
+    height: auto;
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
+}
+
+.orders {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.order {
+    width: 12vw;
+    height: 100%;
+    background-color: #e6e6e6;
+    text-align: center;
+    font-size-adjust: 0.5;
+    font-size: 1.5vw;
+}
+
+.order .comming-order {
+    width: 6vw;
+    margin: auto;
+    display: grid;
+    grid-template-rows: repeat(8, 2vw);
+    overflow-y: visible;
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
+}
+
+.comming-order img {
+    width: 100%;
+    height: auto; 
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
 }

@@ -8,7 +8,8 @@ console.log(ingredients);
 let alreadyScanned = [];
 
 
-const burgerDiv = document.getElementById("burger");
+const currentOrderDiv = document.getElementById("current-order");
+const commingOrderDiv = document.getElementById("comming-order"); //For testing only. remove later
 
 let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
     let minEdgePercentage = 0.90; // 70%
@@ -65,6 +66,8 @@ class Burger {
         this.burger = [];
         this.hasIngredients = []
         this.size = size;
+
+        this.generateRandomBurger();
     }
 
     setSize(size) {
@@ -86,12 +89,12 @@ class Burger {
         this.hasIngredients = new Array(this.size).fill(false);
     }
 
-    displayBurger() {
+    generateBurgerHtml() {
         let burgerHtml = "";
-    for (const ingredient of this.burger) {
-        burgerHtml += `<img class="ingredient silouhette" src="${ingredient.imageUrl}" alt="${ingredient.name}">`;
-    }
-    burgerDiv.innerHTML = burgerHtml;
+        for (const ingredient of this.burger) {
+            burgerHtml += `<img class="ingredient" src="${ingredient.imageUrl}" alt="${ingredient.name}">`;
+        }
+        return burgerHtml;
     }
 
     addIngredientIfAvailable(ingredientToAdd) {
@@ -111,9 +114,13 @@ class Burger {
     }
 }
 
-let burger = new Burger(ingredients, 5);
-burger.generateRandomBurger();
-burger.displayBurger();
+let burger = new Burger(ingredients, 8);
+currentOrderDiv.innerHTML = burger.generateBurgerHtml();
+
+
+//For testing only. remove later
+let commingBurger = new Burger(ingredients, 5);
+commingOrderDiv.innerHTML = commingBurger.generateBurgerHtml();
 
 
 
