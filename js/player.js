@@ -62,7 +62,6 @@ function newScanner() {
   scanner.render(success, error);
 }
 
-
 function newScannerIfNotExists() {
   try {
     if (scanner.getState() != 2) { //2 is scanning

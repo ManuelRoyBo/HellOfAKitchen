@@ -17,6 +17,9 @@ false);
 html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 */
 
+import {items} from "./items.js";
+console.log(items);
+
 let scanner;
 let currentItem = null;
 let currentProcess = null;
@@ -24,6 +27,18 @@ let cutting
 
 let qrCodeDiv = document.getElementById("qr-code");
 let qrCode = new QRCode(qrCodeDiv, "");
+
+const trashDiv = document.getElementById("trash");
+const cuttingBoardDiv = document.getElementById("cutting-board");
+const cuttingBoardProgressbar = document.getElementById("cutting-board-progress-bar");
+
+const grillDiv = document.getElementById("grill");
+const grillProgressSide1 = document.getElementById("grill-progress-side-1");
+const grillProgressbarSide1 = document.getElementById("grill-progress-bar-side-1");
+const grillProgressSide2 = document.getElementById("grill-progress-side-2");
+const grillProgressbarSide2 = document.getElementById("grill-progress-bar-side-2");
+
+const itemDiv = document.getElementById("item");
 
 function generateUUID() { // Public Domain/MIT
   var d = new Date().getTime();//Timestamp
@@ -57,14 +72,11 @@ let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
 }
 
 function newScanner() {
-
-    let qrbox = qrboxFunction;
-
     scanner = new Html5QrcodeScanner(
       "reader",
-      { fps: 1, qrbox: qrbox },
+      { fps: 10, qrbox: qrboxFunction },
     /* verbose= */ false);
-    scanner.render(success, error);
+  scanner.render(success, error);
 }
 
 function newScannerIfNotExists() {
@@ -78,10 +90,9 @@ function newScannerIfNotExists() {
 }
 
 function success(result) {
+  let textP = document.getElementById("text");
+  textP.textContent = result;
   console.log(result + " scanned");
-
-let textP = document.getElementById("text");
-textP.textContent = result;
 
   if (result === "cutting-board" && currentItem !== null && currentItem.cutEquivalent !== null && currentProcess !== cuttingBoard)   {
     endAllProcesses();
@@ -108,6 +119,9 @@ textP.textContent = result;
 }
 
 function displayItemInfo(item) {
+  const itemNameElement = itemDiv.querySelector("h1");
+  const itemDescriptionElement = itemDiv.querySelector(".description");
+  const itemImageElement = itemDiv.querySelector("img");
 
   itemNameElement.textContent = item.itemName;
   itemDescriptionElement.textContent = item.description; // Use the item's description here
@@ -117,6 +131,7 @@ function displayItemInfo(item) {
 function error(err) {} //Qr scan didn't find anything
 
 //trash
+const trashButton = document.getElementById("trash-button");
 
 function trashItem() {
   currentItem = null;
@@ -243,9 +258,10 @@ class Grill {
 
 class Utility {
   static hideIfNotHidden(element) {
-    if (!element.classList.contains("hidden")) {
-      element.classList.add("hidden");
-    }
+    try {if (!element.classList.contains("hidden")) {
+        element.classList.add("hidden");
+      }}
+    catch(error) {}
   }
 
   static showIfHidden(element) {
@@ -259,6 +275,10 @@ class Game {
   static displayStartScreen() {
     this.hideProcesses();
 
+    Utility.hideIfNotHidden(trashDiv);
+    Utility.hideIfNotHidden(qrCodeDiv);
+    Utility.hideIfNotHidden(itemDiv);
+
     Game.hideProcesses();
     newScannerIfNotExists();
     
@@ -266,11 +286,19 @@ class Game {
   static displayItemScreen() {
     this.hideProcesses();
 
+    Utility.showIfHidden(trashDiv);
+    Utility.showIfHidden(itemDiv);
+    Utility.hideIfNotHidden(qrCodeDiv);
+
     newScannerIfNotExists();
   }
   static displayCuttingBoardScreen() {
     this.hideProcesses();
 
+    Utility.showIfHidden(trashDiv);
+    Utility.showIfHidden(cuttingBoardDiv);
+    Utility.hideIfNotHidden(qrCodeDiv);
+    Utility.showIfHidden(itemDiv);
 
 
     scanner.clear();
@@ -279,6 +307,10 @@ class Game {
   static displayGrillScreen() {
     this.hideProcesses();
 
+    Utility.showIfHidden(trashDiv);
+    Utility.hideIfNotHidden(qrCodeDiv);
+    Utility.showIfHidden(grillDiv);
+    Utility.showIfHidden(itemDiv);
 
     try{scanner.clear();}
     catch(error){}
@@ -288,12 +320,16 @@ class Game {
     this.hideProcesses();
     generateUniqueQrCode(currentItem.finalFormQrId);
 
+    Utility.showIfHidden(trashDiv);
+    Utility.showIfHidden(qrCodeDiv);
 
     try{scanner.clear();}
     catch(error){}
   }
 
   static hideProcesses() {
+    Utility.hideIfNotHidden(cuttingBoardDiv);
+    Utility.hideIfNotHidden(grillDiv);
   }
 
   static displayItemOrGiveScreen() {
