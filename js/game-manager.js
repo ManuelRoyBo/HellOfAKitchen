@@ -7,9 +7,10 @@ console.log(ingredients);
 
 let alreadyScanned = [];
 
+let burgerId = 0;
 
 const currentOrderDiv = document.getElementById("current-order");
-const commingOrderDiv = document.getElementById("comming-order"); //For testing only. remove later
+const ordersDiv = document.getElementById("orders");
 
 let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
     let minEdgePercentage = 0.90; // 70%
@@ -58,6 +59,11 @@ function compareObjects(object1, object2) {
     return JSON.stringify(object1) === JSON.stringify(object2);
 }
 
+function getBurgerId() {
+    burgerId++;
+    return burgerId;
+} 
+
 //QR CODE
 
 class Burger {
@@ -66,7 +72,7 @@ class Burger {
         this.burger = [];
         this.hasIngredients = []
         this.size = size;
-
+        this.burgerId = getBurgerId();
         this.generateRandomBurger();
     }
 
@@ -97,6 +103,29 @@ class Burger {
         return burgerHtml;
     }
 
+    generateCommingOrderHtml() {
+        let burgerHtml = /*html*/`
+        <div class="order" id="burger${this.burgerId}">
+            <h2>Manu's Burger</h2>
+            <p>------------------------</p>
+            <div class="comming-order"> 
+        `;
+        burgerHtml += this.generateBurgerHtml();
+
+        burgerHtml += /*html*/`
+        </div>
+        <p>------------------------</p>
+        `;
+        return burgerHtml;
+    }
+
+    addCommingOrder() {
+        console.log(ordersDiv.innerHTML);
+        ordersDiv.innerHTML += this.generateCommingOrderHtml();
+    }
+
+
+
     addIngredientIfAvailable(ingredientToAdd) {
         for (let i = 0; i < this.burger.length; i++) {
             if (this.burger[i] == ingredientToAdd && !this.hasIngredients[i]) {
@@ -120,7 +149,11 @@ currentOrderDiv.innerHTML = burger.generateBurgerHtml();
 
 //For testing only. remove later
 let commingBurger = new Burger(ingredients, 5);
-commingOrderDiv.innerHTML = commingBurger.generateBurgerHtml();
+commingBurger.addCommingOrder();
+
+//For testing only. remove later
+new Burger(ingredients, 8).addCommingOrder();
+new Burger(ingredients, 2).addCommingOrder();
 
 
 

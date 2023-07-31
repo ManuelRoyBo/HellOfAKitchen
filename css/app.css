@@ -61,3 +61,8 @@ button:focus {
 #html5-qrcode-anchor-scan-type-change {
     visibility: hidden;
 }
+
+.vertical-text {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+}
