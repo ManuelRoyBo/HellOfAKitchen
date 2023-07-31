@@ -45,7 +45,7 @@ function generateUniqueQrCode(content) {
 }
 
 let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
-  let minEdgePercentage = 0.96;
+  let minEdgePercentage = 0.90;
   let qrboxSizeWidth = viewfinderWidth * minEdgePercentage;
   let qrboxSizeHeight = viewfinderHeight * minEdgePercentage;
   return {

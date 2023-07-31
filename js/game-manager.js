@@ -11,7 +11,7 @@ let alreadyScanned = [];
 const burgerDiv = document.getElementById("burger");
 
 let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
-    let minEdgePercentage = 0.95; // 70%
+    let minEdgePercentage = 0.90; // 70%
     let qrboxSizeWidth = viewfinderWidth * minEdgePercentage;
     let qrboxSizeHeight = viewfinderHeight * minEdgePercentage;
     return {
