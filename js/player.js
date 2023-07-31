@@ -62,6 +62,7 @@ function newScanner() {
   scanner.render(success, error);
 }
 
+
 function newScannerIfNotExists() {
   try {
     if (scanner.getState() != 2) { //2 is scanning
@@ -73,6 +74,8 @@ function newScannerIfNotExists() {
 }
 
 function success(result) {
+  let textP = document.getElementById("text");
+  textP.textContent = result;
   console.log(result + " scanned");
 
   if (result === "cutting-board" && currentItem !== null && currentItem.cutEquivalent !== null && currentProcess !== cuttingBoard)   {
