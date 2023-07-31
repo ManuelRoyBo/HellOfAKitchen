@@ -43,7 +43,7 @@ function success(result) {
     const ingredient = ingredients.find(ingredient => ingredient.finalFormQrId === id);
 
     if (ingredient != undefined) {
-        if (burger.addIngredientIfAvailable(ingredient)) {
+        if (burgers[0].addIngredientIfAvailable(ingredient)) {
             alreadyScanned.push(result);
         }
     }
