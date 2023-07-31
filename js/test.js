@@ -25,9 +25,6 @@ let cutting
 let qrCodeDiv = document.getElementById("qr-code");
 let qrCode = new QRCode(qrCodeDiv, "");
 
-
-const qrScanVideo = document.querySelector("#reader__scan_region > video");
-
 function generateUUID() { // Public Domain/MIT
   var d = new Date().getTime();//Timestamp
   var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
@@ -60,11 +57,30 @@ let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
 }
 
 function newScanner() {
+
+    let qrbox = qrboxFunction;
+
     scanner = new Html5QrcodeScanner(
       "reader",
-      { fps: 10, qrbox: qrboxFunction },
+      { fps: 1, qrbox: qrbox },
     /* verbose= */ false);
-  scanner.render(success, error);
+    scanner.render(success, error);
+    
+    //wait a second
+    setTimeout(() => {
+        let qrScanVideo = document.querySelector("#reader__scan_region > video");
+    console.log(qrScanVideo);
+    let videoWidth = qrScanVideo.Width * 0.9;
+    let videoHeight = qrScanVideo.Height *0.9;
+    scanner = new Html5QrcodeScanner(
+        "reader",
+        { fps: 10, qrbox: {videoWidth, videoHeight} },
+        /* verbose= */ false);
+    scanner.render(success, error);
+    }, 2000);
+
+
+    
 }
 
 function newScannerIfNotExists() {
