@@ -13,7 +13,7 @@ export class Item {
 const cutLettuce = new Item(
     "Cut lettuce",
     "A piece of cut lettuce.",
-    "img/lettuce-leaf.svg",
+    "img/items/lettuce-leaf.svg",
     null,
     null,
     null,
@@ -24,7 +24,7 @@ const cutLettuce = new Item(
 const lettuce = new Item(
     "Lettuce",
     "A piece of lettuce.",
-    "img/lettuce.svg",
+    "img/items/lettuce.svg",
     "IL",
     cutLettuce
 );
@@ -32,7 +32,7 @@ const lettuce = new Item(
 const cutTomato = new Item(
     "Sliced tomato",
     "A piece of cut tomato.",
-    "img/sliced-tomato.svg",
+    "img/items/sliced-tomato.svg",
     null,
     null,
     null,
@@ -43,7 +43,7 @@ const cutTomato = new Item(
 const tomato = new Item(
     "Tomato",
     "A juicy red ball thingy.",
-    "img/tomato.svg",
+    "img/items/tomato.svg",
     "tomato",
     cutTomato,
 );
@@ -51,7 +51,7 @@ const tomato = new Item(
 const cookedGroundBeef = new Item(
     "Cooked ground beef",
     "Very tasty.",
-    "img/cooked-ground-beef.jpg",
+    "img/items/cooked-ground-beef.jpg",
     null,
     null,
     null,
@@ -62,7 +62,7 @@ const cookedGroundBeef = new Item(
 const groundBeef = new Item(
     "Ground beef",
     "Can be grilled.",
-    "img/ground-beef.png",
+    "img/items/ground-beef.png",
     null,
     null,
     cookedGroundBeef,
@@ -71,7 +71,7 @@ const groundBeef = new Item(
 const beef = new Item(
     "Beef",
     "Can be cut.",
-    "img/beef.svg",
+    "img/items/beef.svg",
     "beef",
     groundBeef,
 );
