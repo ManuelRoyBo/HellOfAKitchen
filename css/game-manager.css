@@ -115,3 +115,7 @@ main {
     -webkit-transform: scaleY(-1);
     transform: scaleY(-1);
 }
+
+.silouhette {
+    filter: brightness(20%);
+}
