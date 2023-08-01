@@ -9,8 +9,9 @@ let alreadyScanned = [];
 
 let burgerId = 0;
 
-const currentOrderDiv = document.getElementById("current-order");
+const currentBurgerDiv = document.getElementById("current-burger");
 const ordersDiv = document.getElementById("orders");
+const currentOrderDiv = document.getElementById("current-order");
 
 let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
     let minEdgePercentage = 0.90; // 70%
@@ -117,7 +118,6 @@ class Burger {
 
         burgerHtml += /*html*/`
         </div>
-        <p>------------------------</p>
         `;
         return burgerHtml;
     }
@@ -165,11 +165,17 @@ class Burger {
 
 
     //Game stuff
-    setCurrentOrder() {
-        currentOrderDiv.innerHTML = this.generateBurgerHtml();
+    setCurrentBurger() {
+        currentBurgerDiv.innerHTML = this.generateBurgerHtml();
         this.addSilouhetteToEveryIngredient();
         this.addHiddenClassToEveryIngredient();
         this.showNextIngredient();
+
+        this.setCurrentOrder();
+    }
+
+    setCurrentOrder() {
+        currentOrderDiv.innerHTML = /*html*/`<h1 class="vertical-text no-margin white-text">Current order:</h1>` + this.generateCommingOrderHtml();
     }
 
     addIngredientIfAvailable(ingredientToAdd) {
@@ -193,12 +199,12 @@ class Burger {
 
 let burgers = [
     new Burger(ingredients, 3),
-    new Burger(ingredients, 3),
-    new Burger(ingredients, 3),
+    new Burger(ingredients, 6),
+    new Burger(ingredients, 8),
     new Burger(ingredients, 3),
 ]
 
-burgers[0].setCurrentOrder();
+burgers[0].setCurrentBurger();
 burgers[1].addCommingOrder();
 burgers[2].addCommingOrder();
 burgers[3].addCommingOrder();

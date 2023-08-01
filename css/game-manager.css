@@ -6,10 +6,9 @@ body {
 
 main {
     display: grid;
-    grid-template-columns: 30vw 15vw auto;
+    grid-template-columns: 30vw 15vw 25vw auto;
     grid-template-rows: 50vh 50vh;
     column-gap: 50px;
-    
 }
 
 #reader {
@@ -43,7 +42,7 @@ main {
     grid-row-end: 3;
 }
 
-.current-order {
+.current-burger {
     grid-column: 2;
     grid-row-start: 1;
     grid-row-end: 3;
@@ -56,7 +55,7 @@ main {
     margin: auto;
 }
 
-.current-order .ingredient {
+.current-burger .ingredient {
     width: 100%;
     height: auto;
     -webkit-transform: scaleY(-1);
@@ -64,40 +63,46 @@ main {
 }
 
 #orders {
-    grid-column: 3;
+    grid-column-start: 3;
+    grid-column-end: 4;
     grid-row: 1;
     display: grid;
     grid-template-columns: repeat(4, auto);
     width: 100%;
 }
 
+#current-order > h1,
 #orders > h1 {
     color: white;
-    margin: 0;
+    margin: 10px 0;
     font-size: 6vh;
 }
 
-#orders > * {
-    margin: 10px 0;
-}
-
 .order {
+    box-sizing: border-box;
+    margin: 10px;
     width: 12vw;
-    height: 100%;
+    height: calc(100% - 20px);
     background-color: #e6e6e6;
     text-align: center;
     font-size-adjust: 0.5;
     font-size: 1.5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .order > h2 {   
     margin-bottom: 0;
+    margin-top: 5px;
 }
 
 .order > p {
     margin-top: -1vw;
+    margin-bottom: 5px;
     font-size: 1.5vw;
 }
+
 
 .order .comming-order {
     width: 6vw;
@@ -107,6 +112,7 @@ main {
     overflow-y: visible;
     -webkit-transform: scaleY(-1);
     transform: scaleY(-1);
+    align-self: end;
 }
 
 .comming-order img {
@@ -114,6 +120,16 @@ main {
     height: auto; 
     -webkit-transform: scaleY(-1);
     transform: scaleY(-1);
+}
+
+#current-order {
+    grid-column: 3;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: fit-content, auto;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .silouhette {
