@@ -9,14 +9,19 @@
 body {
     font-family: "Teko", sans-serif;
 }
-select {
+select,
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="time"]{
     height: var(--dropdown-height);
     font-family: "Teko", sans-serif;
     font-size: var(--text-size);
     border-radius: 6px;
 }
 
-button{
+button,
+input[type="submit"]{
     font-size: var(--text-size);
     font-family: "Teko", sans-serif;;
     appearance: button;

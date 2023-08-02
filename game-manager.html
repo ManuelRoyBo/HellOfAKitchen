@@ -18,7 +18,28 @@
     <main>
         <div id="reader" class=""></div>
         <div class="game-controls" id="game-controls">
+            <input id="restaurant-name" class="text" value="Manu's Burger"/>
+            <div class="beforeGame">
+                <form action="">
+                    <div>
+                        <label for="playerCount">Number of players:</label>
+                        <input type="number" name="playerCount" id="playerCount" min="1" max="99" value="1" requied/>
+                    </div>
 
+                    <div>
+                        <label for="next-day">Day</label>
+                        <input type="number" name="Day" id="next-day" min="1" max="99" value="1" required/>
+                    </div>
+
+                    <div>
+                        <label for="day-duration">Day duration: (mm:ss)</label>
+                        <input type="time" name="day-duration" id="day-duration" min="00:01" max="10:00" value="03:00" required/>
+                    </div>
+
+
+                    <input type="submit" value="Start day"/>
+                </form>
+            </div>
         </div>
         <div id="current-burger" class="current-burger">
         </div>
