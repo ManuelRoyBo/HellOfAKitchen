@@ -1,5 +1,5 @@
 export class Item {
-    constructor({ itemName, description, imageUrl, qrCodeId = null, cutEquivalent = null, grilledEquivalent = null, finalFormQrId = null, oddsOfBeingInABurger = null }) {
+    constructor({ itemName, description, imageUrl, qrCodeId = null, cutEquivalent = null, grilledEquivalent = null, finalFormQrId = null, pointsOnceCompleted=0}) {
       this.itemName = itemName;
       this.description = description;
       this.imageUrl = imageUrl;
@@ -7,7 +7,6 @@ export class Item {
       this.cutEquivalent = cutEquivalent;
       this.grilledEquivalent = grilledEquivalent;
       this.finalFormQrId = finalFormQrId;
-      this.oddsOfBeingInABurger = oddsOfBeingInABurger;
     }
 }
   
@@ -16,7 +15,7 @@ const cutLettuce = new Item({
     description: "A piece of cut lettuce.",
     imageUrl: "img/items/lettuce-leaf.svg",
     finalFormQrId: "CL",
-    oddsOfBeingInABurger: 0.5
+    pointsOnceCompleted: 100
 });
 
 const lettuce = new Item({
@@ -32,7 +31,7 @@ const cutTomato = new Item({
     description: "A piece of cut tomato.",
     imageUrl: "img/items/sliced-tomato.svg",
     finalFormQrId: "CT",
-    oddsOfBeingInABurger: 0.5
+    pointsOnceCompleted: 100
 });
 
 const tomato = new Item({
@@ -48,7 +47,7 @@ const cookedGroundBeef = new Item({
     description: "Very tasty.",
     imageUrl: "img/items/cooked-ground-beef.jpg",
     finalFormQrId: "CG",
-    oddsOfBeingInABurger: 0.9
+    pointsOnceCompleted: 200
 });
 
 const groundBeef = new Item({
