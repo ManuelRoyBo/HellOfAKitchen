@@ -92,6 +92,10 @@ main {
 .order > h2 {   
     margin-bottom: 0;
     margin-top: 5px;
+    font-size: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .order > p {

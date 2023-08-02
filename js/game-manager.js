@@ -12,9 +12,19 @@ let alreadyScanned = [];
 
 let burgerId = 0;
 
+const CLOSED_TEXT = "CLOSED";
+
 const currentBurgerDiv = document.getElementById("current-burger");
 const ordersDiv = document.getElementById("orders");
 const currentOrderDiv = document.getElementById("current-order");
+
+const restaurantNameInputField = document.getElementById("restaurant-name");
+let restaurantName = "Manu's Burgers";
+restaurantNameInputField.value = restaurantName;
+
+const timeLeftH1 = document.getElementById("time-left");
+const scoreH1 = document.getElementById("score");
+
 
 let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
     let minEdgePercentage = 0.90; // 70%
@@ -59,16 +69,14 @@ function error(err) {
     //quand ca ne scan pas
 }
 
-function compareObjects(object1, object2) {
-    return JSON.stringify(object1) === JSON.stringify(object2);
-}
-
 function getBurgerId() {
     burgerId++;
     return burgerId;
 } 
 
-//QR CODE
+restaurantNameInputField.addEventListener("change", () => {
+    restaurantName = restaurantNameInputField.value;
+});
 
 class Burger {
     constructor(ingredients, size) {
@@ -76,6 +84,7 @@ class Burger {
         this.burger = [];
         this.hasIngredients = []
         this.size = size;
+        this.scoreYield = 0;
         this.burgerId = getBurgerId();
         this.generateRandomBurger();
         this.nextIngredientToAdd = null;
@@ -94,10 +103,10 @@ class Burger {
         let burger = [];
         for (let i = 0; i < this.size; i++) {
             let randomIngredient = this.ingredients[Math.floor(Math.random() * this.ingredients.length)];
-            burger.push(randomIngredient);
+            burger.push(randomIngredient);666666666
+            this.scoreYield += randomIngredient.pointsOnceCompleted;
         }
         this.burger = burger;
-        //create array list the size of the burger. all false
         this.hasIngredients = new Array(this.size).fill(false);
     }
 
@@ -113,7 +122,7 @@ class Burger {
     generateCommingOrderHtml() {
         let burgerHtml = /*html*/`
         <div class="order" id="burger${this.burgerId}">
-            <h2>Manu's Burger</h2>
+            <h2>${restaurantName}</h2>
             <p>------------------------</p>
             <div class="comming-order"> 
         `;
@@ -150,7 +159,6 @@ class Burger {
     }
 
     addHiddenClassToEveryIngredient() {
-        //get all ingredients with the id of the burger
         const ingredients = document.querySelectorAll(`[id^="${this.burgerId}-"]`);
         ingredients.forEach(ingredient => {
             ingredient.classList.add("hidden");
@@ -215,20 +223,29 @@ class Game {
         this.completedBurgers = [];
         this.difficulty = difficulty;
         this.playerCount = playerCount;
-        this.intervalId = null; // Store the interval ID for later use
+        this.intervalId = null;
+    
+        this.scoreBoardManager = new ScoreBoardManager(this.duration);
+
+        this.score = 0;
     }
 
     startGame() {
         console.log("game started");
 
+        this.scoreBoardManager.setScore(this.score);
         this.addOrderIfCan();
 
         this.intervalId = setInterval(() => {
             this.addOrderIfCan();
-        }, this.getIntervalDuration() * 1000); // Call the getIntervalDuration() method to get the interval duration
-        setTimeout(() => {
+        }, this.getIntervalDuration() * 1000); 
+        
+        this.scoreBoardManager.startTimer(this.duration);
+
+        document.addEventListener('gameFinished', event => {
+            this.score = event.detail;
             this.endGame();
-        }, this.duration * 1000);
+        });
 
         document.addEventListener('burgerCompleted', event => {
             const completedBurger = event.detail;
@@ -250,6 +267,7 @@ class Game {
     burgerCompleted(burger) {
         this.removeBurger(burger);
         this.completedBurgers.push(burger);
+        this.scoreBoardManager.addScore(burger.scoreYield);
     }
 
     removeBurger(burger) {
@@ -283,14 +301,12 @@ class Game {
 
     updateOrderVisuals() {
         if (this.burgers.length > 0) {
-            //select first instance of .ingredient class
             let firstIngredient = currentBurgerDiv.querySelector(".ingredient");
             if (firstIngredient == undefined || firstIngredient.id.split("-")[0] != this.burgers[0].burgerId) {
                 this.burgers[0].setCurrentBurger();
             }
         }
         
-        //get all orders
         const orders = document.querySelectorAll("#orders .order");
         orders.forEach(order => {
             const orderId = order.id.replace(/burger/g, "");
@@ -309,7 +325,67 @@ class Game {
     }
 }
 
-let game = new Game(600, 2, 1);
+class ScoreBoardManager {
+    constructor(gameDuration) {
+        this.score = 0;
+        this.gameDuration = gameDuration;
+        this.timeLeft = 0;
+    }
+
+    setScore(score) {
+        scoreH1.textContent = score;
+    }
+
+    addScore(value) {
+        this.score += value;
+        this.setScore(this.score);
+    }
+
+    setTimeLeft(timeLeft) {
+        this.timeLeft = timeLeft;
+        this.updateTimerVisuals();
+    }
+
+    startTimer() {
+        this.setTimeLeft(this.gameDuration);
+        this.intervalId = setInterval(() => {
+            this.setTimeLeft(this.timeLeft - 1);
+            if(this.timeLeft <= 0) {
+                this.endGame();
+            }
+        }, 1000);
+    }
+
+    convertSecondsToMinutesAndSeconds(seconds) {
+        let minutes = Math.floor(seconds / 60);
+        let secondsLeft = seconds - minutes * 60;
+        if (secondsLeft < 10) {
+            secondsLeft = "0" + secondsLeft;
+        }
+        return `${minutes}:${secondsLeft}`;
+    }
+
+    updateTimerVisuals() {
+        if (this.timeLeft > 0) {
+            timeLeftH1.textContent = this.convertSecondsToMinutesAndSeconds(this.timeLeft); 
+        }
+        else {
+            timeLeftH1.textContent = CLOSED_TEXT;
+        }
+    }
+
+    endGame() {
+        clearInterval(this.intervalId);
+        this.updateTimerVisuals();
+        const event = new CustomEvent('gameFinished', { detail: this.score });
+        document.dispatchEvent(event);
+    }
+
+
+
+}
+
+let game = new Game(60, 2, 1);
 game.startGame();
 
 

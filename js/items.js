@@ -1,5 +1,5 @@
 export class Item {
-    constructor({ itemName, description, imageUrl, qrCodeId = null, cutEquivalent = null, grilledEquivalent = null, finalFormQrId = null, pointsOnceCompleted=0}) {
+    constructor({ itemName, description, imageUrl, qrCodeId = null, cutEquivalent = null, grilledEquivalent = null, finalFormQrId = null, pointsOnceCompleted = 0}) {
       this.itemName = itemName;
       this.description = description;
       this.imageUrl = imageUrl;
@@ -7,6 +7,7 @@ export class Item {
       this.cutEquivalent = cutEquivalent;
       this.grilledEquivalent = grilledEquivalent;
       this.finalFormQrId = finalFormQrId;
+      this.pointsOnceCompleted = pointsOnceCompleted;
     }
 }
   
