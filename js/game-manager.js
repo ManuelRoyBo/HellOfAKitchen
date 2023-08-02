@@ -43,8 +43,8 @@ function success(result) {
     //get the ingredient with the id from the ingredients list
     const ingredient = ingredients.find(ingredient => ingredient.finalFormQrId === id);
 
-    if (ingredient != undefined) {
-        if (burgers[0].addIngredientIfAvailable(ingredient)) {
+    if (ingredient != undefined ) {
+        if (game.burgers[0].addIngredientIfAvailable(ingredient)) {
             alreadyScanned.push(result);
         }
     }
@@ -180,34 +180,126 @@ class Burger {
 
     addIngredientIfAvailable(ingredientToAdd) {
         if (this.nextIngredientToAdd == ingredientToAdd) {
-            console.log("ingredient added");
             this.hasIngredients[this.nextIngredientToAddId] = true;
 
             this.removeSilouhetteFromIngredient(this.nextIngredientToAddId);
-            this.nextIngredientToAddId++;
-            this.showNextIngredient();
-            this.isBurgerComplete();
+            if (this.hasIngredients.every(hasIngredient => hasIngredient)){
+                this.burgerCompleted();
+            }
+            else {
+                this.nextIngredientToAddId++;
+                this.showNextIngredient();
+            }
+
             return true;
         }
         return false;
     }
-
-    isBurgerComplete() {
-        return this.hasIngredients.every(hasIngredient => hasIngredient);
-    }        
+    burgerCompleted() {
+        const event = new CustomEvent('burgerCompleted', { detail: this });
+        document.dispatchEvent(event);
+    }
 }
 
-let burgers = [
-    new Burger(ingredients, 3),
-    new Burger(ingredients, 6),
-    new Burger(ingredients, 8),
-    new Burger(ingredients, 3),
-]
+//Game variables
+const maxOrders = 4;
+class Game {
+    constructor(duration, difficulty = 1, playerCount = 1) {
+        this.duration = duration; //Game duration in seconds
+        this.burgers = [];
+        this.completedBurgers = [];
+        this.difficulty = difficulty;
+        this.playerCount = playerCount;
+        this.intervalId = null; // Store the interval ID for later use
+    }
 
-burgers[0].setCurrentBurger();
-burgers[1].addCommingOrder();
-burgers[2].addCommingOrder();
-burgers[3].addCommingOrder();
+    startGame() {
+        console.log("game started");
 
+        this.addOrderIfCan();
+
+        this.intervalId = setInterval(() => {
+            this.addOrderIfCan();
+        }, this.getIntervalDuration() * 1000); // Call the getIntervalDuration() method to get the interval duration
+        setTimeout(() => {
+            this.endGame();
+        }, this.duration * 1000);
+
+        document.addEventListener('burgerCompleted', event => {
+            const completedBurger = event.detail;
+            this.burgerCompleted(completedBurger);
+        });
+    }
+
+    getIntervalDuration() {
+        const baseDuration = 2 / /*this.difficulty / */  this.playerCount;
+        const randomOffset = Math.random() * 2 - 1;
+        return baseDuration + randomOffset; 
+    }
+
+    addBurger(burger) {
+        this.burgers.push(burger);
+        burger.addCommingOrder();
+    }
+
+    burgerCompleted(burger) {
+        this.removeBurger(burger);
+        this.completedBurgers.push(burger);
+    }
+
+    removeBurger(burger) {
+        const index = this.burgers.indexOf(burger);
+        if (index !== -1) {
+            this.burgers.splice(index, 1);
+            this.completedBurgers.push(burger);
+        }
+        this.updateOrderVisuals();
+    }
+    
+    generateRandomBurger() {
+        let burger = new Burger(ingredients, this.difficulty);
+        return burger;
+    }
+
+    addOrderIfCan() {
+        if (this.burgers.length < maxOrders) {
+            this.addBurger(this.generateRandomBurger());
+            this.updateOrderVisuals();
+        }
+        else {
+            console.log("couldn't add order");
+        }
+    }
+
+    endGame() {
+        clearInterval(this.intervalId);
+    }
+
+    updateOrderVisuals() {
+        if (this.burgers.length > 0) {
+            this.burgers[0].setCurrentBurger();
+        }
+        
+        //get all orders
+        const orders = document.querySelectorAll("#orders .order");
+        orders.forEach(order => {
+            const orderId = order.id.replace(/burger/g, "");
+            const burger = this.burgers.find(burger => burger.burgerId == orderId);
+            if (burger == undefined || burger == this.burgers[0]) {
+                order.remove();
+            }
+        });
+
+        this.burgers.forEach(burger => {
+            const order = document.getElementById(`burger${burger.burgerId}`);
+            if (order == undefined) {
+                burger.addCommingOrder();
+            }
+        });
+    }
+}
+
+let game = new Game(600, 2, 1);
+game.startGame();
 
 
