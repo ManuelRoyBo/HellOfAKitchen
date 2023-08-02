@@ -177,6 +177,21 @@ main {
     border: 1px solid silver;
 }
 
+.game-controls h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 3vw;
+    font-weight: 400;
+
+}
+
+.game-controls h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 2vw;
+    font-weight: 400;
+}
+
 #restaurant-name {
     background: none;
     border: none;
@@ -214,3 +229,4 @@ border-radius: 5px;
 border: 1px solid #ccc;
 width: 30%;
 }
+

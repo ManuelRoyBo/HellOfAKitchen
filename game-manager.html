@@ -19,7 +19,7 @@
         <div id="reader" class=""></div>
         <div class="game-controls" id="game-controls">
             <input id="restaurant-name" class="text" value="Manu's Burger"/>
-            <div class="beforeGame">
+            <div id="before-game" class="beforeGame hidden">
                 <form action="">
                     <div>
                         <label for="playerCount">Number of players:</label>
@@ -39,6 +39,14 @@
 
                     <input type="submit" value="Start day"/>
                 </form>
+            </div>
+
+            <div id="inGame">
+                <h2>Time until closing:</h2>
+                <h1 id="time-left">${MM:SS}</h1>
+
+                <h2>Score:</h2>
+                <h1 id="score">${0}</h1>
             </div>
         </div>
         <div id="current-burger" class="current-burger">
