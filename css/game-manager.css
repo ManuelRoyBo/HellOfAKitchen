@@ -71,6 +71,10 @@ main {
     width: 100%;
 }
 
+#orders .order{
+    animation: comming-order-appear 0.5s ease-in-out;
+}
+
 #current-order > h1,
 #orders > h1 {
     color: white;
@@ -132,6 +136,29 @@ main {
     flex-wrap: wrap;
 }
 
+#current-order .order {
+    animation: current-order-appear 0.5s ease-in-out;
+}
+
 .silouhette {
     filter: brightness(20%);
+}
+
+/*Orders animations*/
+@keyframes comming-order-appear {
+    0% {
+        transform: translateX(500%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes current-order-appear {
+    0% {
+        transform: translateY(calc(100% + 20px));
+    }
+    100% {
+        transform: translateY(0%);
+    }
 }
