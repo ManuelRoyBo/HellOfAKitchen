@@ -14,16 +14,16 @@ let burgerId = 0;
 
 const CLOSED_TEXT = "CLOSED";
 
-const currentBurgerDiv = document.getElementById("current-burger");
-const ordersDiv = document.getElementById("orders");
-const currentOrderDiv = document.getElementById("current-order");
+const CURRENT_BURGER_DIV = document.getElementById("current-burger");
+const ORDERS_DIV = document.getElementById("orders");
+const CURRENT_ORDER_DIV = document.getElementById("current-order");
 
-const restaurantNameInputField = document.getElementById("restaurant-name");
+const RESTAURANT_NAME_INPUT_FIELD = document.getElementById("restaurant-name");
 let restaurantName = "Manu's Burgers";
-restaurantNameInputField.value = restaurantName;
+RESTAURANT_NAME_INPUT_FIELD.value = restaurantName;
 
-const timeLeftH1 = document.getElementById("time-left");
-const scoreH1 = document.getElementById("score");
+const TIME_LEFT_H1 = document.getElementById("time-left");
+const SCORE_H1 = document.getElementById("score");
 
 
 let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
@@ -74,8 +74,8 @@ function getBurgerId() {
     return burgerId;
 } 
 
-restaurantNameInputField.addEventListener("change", () => {
-    restaurantName = restaurantNameInputField.value;
+RESTAURANT_NAME_INPUT_FIELD.addEventListener("change", () => {
+    restaurantName = RESTAURANT_NAME_INPUT_FIELD.value;
 });
 
 class Burger {
@@ -179,7 +179,7 @@ class Burger {
     //Game stuff
     setCurrentBurger() {
         console.log("setCurrentBurger");
-        currentBurgerDiv.innerHTML = this.generateBurgerHtml();
+        CURRENT_BURGER_DIV.innerHTML = this.generateBurgerHtml();
         this.addSilouhetteToEveryIngredient();
         this.addHiddenClassToEveryIngredient();
         this.showNextIngredient();
@@ -188,7 +188,7 @@ class Burger {
     }
 
     setCurrentOrder() {
-        currentOrderDiv.innerHTML = /*html*/`<h1 class="vertical-text no-margin white-text">Current order:</h1>` + this.generateCommingOrderHtml();
+        CURRENT_ORDER_DIV.innerHTML = /*html*/`<h1 class="vertical-text no-margin white-text">Current order:</h1>` + this.generateCommingOrderHtml();
     }
 
     addIngredientIfAvailable(ingredientToAdd) {
@@ -215,7 +215,7 @@ class Burger {
 }
 
 //Game variables
-const maxOrders = 4;
+const MAX_ORDERS = 4;
 class Game {
     constructor(duration, difficulty = 1, playerCount = 1) {
         this.duration = duration; //Game duration in seconds
@@ -284,7 +284,7 @@ class Game {
 
     addOrderIfCan() {
         console.log("addOrderIfCan");
-        if (this.burgers.length < maxOrders) {
+        if (this.burgers.length < MAX_ORDERS) {
             this.addBurger(this.generateRandomBurger());
             this.updateOrderVisuals();
         }
@@ -303,16 +303,16 @@ class Game {
     }
 
     updateOrderVisuals() {
-        let currentOrder = currentOrderDiv.querySelector(".order");
+        let currentOrder = CURRENT_ORDER_DIV.querySelector(".order");
         if (this.burgers.length > 0) {
-            let firstIngredient = currentBurgerDiv.querySelector(".ingredient");
+            let firstIngredient = CURRENT_BURGER_DIV.querySelector(".ingredient");
             if (firstIngredient == undefined || firstIngredient.id.split("-")[0] != this.burgers[0].burgerId) {
                 this.burgers[0].setCurrentBurger();
             }
         }
         else if (currentOrder != undefined) {
             currentOrder.remove();
-            currentBurgerDiv.innerHTML = "";
+            CURRENT_BURGER_DIV.innerHTML = "";
         }
         
         const orders = document.querySelectorAll("#orders .order");
@@ -341,7 +341,7 @@ class ScoreBoardManager {
     }
 
     setScore(score) {
-        scoreH1.textContent = score;
+        SCORE_H1.textContent = score;
     }
 
     addScore(value) {
@@ -375,10 +375,10 @@ class ScoreBoardManager {
 
     updateTimerVisuals() {
         if (this.timeLeft > 0) {
-            timeLeftH1.textContent = this.convertSecondsToMinutesAndSeconds(this.timeLeft); 
+            TIME_LEFT_H1.textContent = this.convertSecondsToMinutesAndSeconds(this.timeLeft); 
         }
         else {
-            timeLeftH1.textContent = CLOSED_TEXT;
+            TIME_LEFT_H1.textContent = CLOSED_TEXT;
         }
     }
 
@@ -393,7 +393,5 @@ class ScoreBoardManager {
 
 }
 
-let game = new Game(10, 2, 1);
+let game = new Game(120, 2, 1);
 game.startGame();
-
-
