@@ -103,7 +103,7 @@ class Burger {
         let burger = [];
         for (let i = 0; i < this.size; i++) {
             let randomIngredient = this.ingredients[Math.floor(Math.random() * this.ingredients.length)];
-            burger.push(randomIngredient);666666666
+            burger.push(randomIngredient);
             this.scoreYield += randomIngredient.pointsOnceCompleted;
         }
         this.burger = burger;
