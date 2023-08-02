@@ -268,9 +268,7 @@ class Game {
         this.removeBurger(burger);
         this.completedBurgers.push(burger);
         this.scoreBoardManager.addScore(burger.scoreYield);
-    }
 
-    removeBurger(burger) {
         const index = this.burgers.indexOf(burger);
         if (index !== -1) {
             this.burgers.splice(index, 1);
@@ -297,14 +295,24 @@ class Game {
 
     endGame() {
         clearInterval(this.intervalId);
+
+        //removes all burgers
+        this.burgers = [];
+        this.updateOrderVisuals();
+
     }
 
     updateOrderVisuals() {
+        let currentOrder = currentOrderDiv.querySelector(".order");
         if (this.burgers.length > 0) {
             let firstIngredient = currentBurgerDiv.querySelector(".ingredient");
             if (firstIngredient == undefined || firstIngredient.id.split("-")[0] != this.burgers[0].burgerId) {
                 this.burgers[0].setCurrentBurger();
             }
+        }
+        else if (currentOrder != undefined) {
+            currentOrder.remove();
+            currentBurgerDiv.innerHTML = "";
         }
         
         const orders = document.querySelectorAll("#orders .order");
@@ -385,7 +393,7 @@ class ScoreBoardManager {
 
 }
 
-let game = new Game(60, 2, 1);
+let game = new Game(10, 2, 1);
 game.startGame();
 
 
