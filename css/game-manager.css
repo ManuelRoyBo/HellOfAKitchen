@@ -67,7 +67,7 @@ main {
     grid-column-end: 4;
     grid-row: 1;
     display: grid;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(4, min-content);
     width: 100%;
 }
 
@@ -130,10 +130,8 @@ main {
     grid-column: 3;
     grid-row: 2;
     display: grid;
-    grid-template-columns: fit-content, auto;
+    grid-template-columns: repeat(2, min-content);
     width: 100%;
-    display: flex;
-    flex-wrap: wrap;
 }
 
 #current-order .order {
@@ -156,7 +154,7 @@ main {
 
 @keyframes current-order-appear {
     0% {
-        transform: translateY(calc(100% + 20px));
+        transform: translateY(calc(-100% - 20px));
     }
     100% {
         transform: translateY(0%);

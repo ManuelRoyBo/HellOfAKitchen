@@ -1,5 +1,8 @@
 'use strict';
 let scanner
+
+const orderInterval = 5; //in seconds
+
 import {items} from "./items.js";
 //every item from items where finalQrCodeId is not null
 const ingredients = items.filter(item => item.finalFormQrId !== null);
@@ -123,7 +126,8 @@ class Burger {
     }
 
     addCommingOrder() {
-        ordersDiv.innerHTML += this.generateCommingOrderHtml();
+        const ordersDiv = document.getElementById("orders");
+        ordersDiv.insertAdjacentHTML("beforeend", this.generateCommingOrderHtml());
     }
 
     removeCommingOrder() {
@@ -166,6 +170,7 @@ class Burger {
 
     //Game stuff
     setCurrentBurger() {
+        console.log("setCurrentBurger");
         currentBurgerDiv.innerHTML = this.generateBurgerHtml();
         this.addSilouhetteToEveryIngredient();
         this.addHiddenClassToEveryIngredient();
@@ -232,7 +237,7 @@ class Game {
     }
 
     getIntervalDuration() {
-        const baseDuration = 2 / /*this.difficulty / */  this.playerCount;
+        const baseDuration = orderInterval / /*this.difficulty / */  this.playerCount;
         const randomOffset = Math.random() * 2 - 1;
         return baseDuration + randomOffset; 
     }
@@ -262,6 +267,7 @@ class Game {
     }
 
     addOrderIfCan() {
+        console.log("addOrderIfCan");
         if (this.burgers.length < maxOrders) {
             this.addBurger(this.generateRandomBurger());
             this.updateOrderVisuals();
@@ -277,7 +283,11 @@ class Game {
 
     updateOrderVisuals() {
         if (this.burgers.length > 0) {
-            this.burgers[0].setCurrentBurger();
+            //select first instance of .ingredient class
+            let firstIngredient = currentBurgerDiv.querySelector(".ingredient");
+            if (firstIngredient == undefined || firstIngredient.id.split("-")[0] != this.burgers[0].burgerId) {
+                this.burgers[0].setCurrentBurger();
+            }
         }
         
         //get all orders
