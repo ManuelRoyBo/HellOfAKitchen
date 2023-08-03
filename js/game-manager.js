@@ -1,5 +1,6 @@
 'use strict';
 let scanner
+let game
 
 const orderInterval = 5; //in seconds
 
@@ -24,6 +25,11 @@ RESTAURANT_NAME_INPUT_FIELD.value = restaurantName;
 
 const TIME_LEFT_H1 = document.getElementById("time-left");
 const SCORE_H1 = document.getElementById("score");
+
+const BEFORE_GAME_MENU_DIV = document.getElementById("before-game");
+const GAME_SETTINGS_FORM = document.getElementById("game-settings");
+const IN_GAME_DIV = document.getElementById("in-game");
+const CLOSE_NOW_BUTTON = document.getElementById("stop-game");
 
 
 let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
@@ -77,6 +83,26 @@ function getBurgerId() {
 RESTAURANT_NAME_INPUT_FIELD.addEventListener("change", () => {
     restaurantName = RESTAURANT_NAME_INPUT_FIELD.value;
 });
+
+/*Pre game menu*/
+GAME_SETTINGS_FORM.addEventListener('submit', (event) => {
+    event.preventDefault(); // prevent the form from submitting
+  
+    const formData = new FormData(GAME_SETTINGS_FORM);
+
+    /*convert time to seconds*/
+    function timeToSeconds(value) {
+        const [minutes, seconds] = value.split(':');
+        return (parseInt(minutes) * 60) + (parseInt(seconds));
+      }
+
+    const playerCount = formData.get('player-count');
+    const day = formData.get('day');
+    const duration = timeToSeconds(formData.get('day-duration'));
+
+    game = new Game(duration, playerCount);
+    game.startGame();
+  });
 
 class Burger {
     constructor(ingredients, size) {
@@ -217,11 +243,10 @@ class Burger {
 //Game variables
 const MAX_ORDERS = 4;
 class Game {
-    constructor(duration, difficulty = 1, playerCount = 1) {
+    constructor(duration, playerCount = 1) {
         this.duration = duration; //Game duration in seconds
         this.burgers = [];
         this.completedBurgers = [];
-        this.difficulty = difficulty;
         this.playerCount = playerCount;
         this.intervalId = null;
     
@@ -231,6 +256,8 @@ class Game {
     }
 
     startGame() {
+        Display.displayInGame();
+
         console.log("game started");
 
         this.scoreBoardManager.setScore(this.score);
@@ -254,7 +281,7 @@ class Game {
     }
 
     getIntervalDuration() {
-        const baseDuration = orderInterval / /*this.difficulty / */  this.playerCount;
+        const baseDuration = orderInterval;
         const randomOffset = Math.random() * 2 - 1;
         return baseDuration + randomOffset; 
     }
@@ -265,7 +292,6 @@ class Game {
     }
 
     burgerCompleted(burger) {
-        this.removeBurger(burger);
         this.completedBurgers.push(burger);
         this.scoreBoardManager.addScore(burger.scoreYield);
 
@@ -278,7 +304,7 @@ class Game {
     }
     
     generateRandomBurger() {
-        let burger = new Burger(ingredients, this.difficulty);
+        let burger = new Burger(ingredients, 2);
         return burger;
     }
 
@@ -300,6 +326,7 @@ class Game {
         this.burgers = [];
         this.updateOrderVisuals();
 
+        Display.displayPreGameMenu();
     }
 
     updateOrderVisuals() {
@@ -338,6 +365,11 @@ class ScoreBoardManager {
         this.score = 0;
         this.gameDuration = gameDuration;
         this.timeLeft = 0;
+
+
+        CLOSE_NOW_BUTTON.addEventListener("click", () => {
+            this.endGame();
+        });
     }
 
     setScore(score) {
@@ -393,5 +425,29 @@ class ScoreBoardManager {
 
 }
 
-let game = new Game(120, 2, 1);
-game.startGame();
+class Display {
+
+    static addHiddenClass(element) {
+        if (!element.classList.contains("hidden")) {
+            element.classList.add("hidden");
+        }
+    }
+
+    static removeHiddenClass(element) {
+        if (element.classList.contains("hidden")) {
+            element.classList.remove("hidden");
+        }
+    }
+
+    static displayPreGameMenu() {
+        this.removeHiddenClass(BEFORE_GAME_MENU_DIV);
+        this.addHiddenClass(IN_GAME_DIV);
+    }
+
+    static displayInGame() {
+        this.removeHiddenClass(IN_GAME_DIV);
+        this.addHiddenClass(BEFORE_GAME_MENU_DIV);
+    }
+}
+
+Display.displayPreGameMenu();
