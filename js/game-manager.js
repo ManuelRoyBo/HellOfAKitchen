@@ -454,10 +454,20 @@ class Display {
     static displayPreGameMenu() {
         this.removeHiddenClass(BEFORE_GAME_MENU_DIV);
         this.addHiddenClass(IN_GAME_DIV);
+
+        this.addHiddenClass(CURRENT_BURGER_DIV);
+        this.addHiddenClass(CURRENT_ORDER_DIV);
+        this.addHiddenClass(ORDERS_DIV);
     }
 
     static displayInGame() {
         this.removeHiddenClass(IN_GAME_DIV);
         this.addHiddenClass(BEFORE_GAME_MENU_DIV);
+
+        this.removeHiddenClass(CURRENT_BURGER_DIV);
+        this.removeHiddenClass(CURRENT_ORDER_DIV);
+        this.removeHiddenClass(ORDERS_DIV);
     }
 }
+
+Display.displayPreGameMenu();

@@ -59,7 +59,7 @@ button:focus {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 /*QR code scanner*/
