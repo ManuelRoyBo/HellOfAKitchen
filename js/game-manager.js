@@ -15,6 +15,8 @@ let burgerId = 0;
 
 const CLOSED_TEXT = "CLOSED";
 
+const DAY_INFO_DIV = document.getElementById("day-informations");
+
 const CURRENT_BURGER_DIV = document.getElementById("current-burger");
 const ORDERS_DIV = document.getElementById("orders");
 const CURRENT_ORDER_DIV = document.getElementById("current-order");
@@ -30,6 +32,8 @@ const BEFORE_GAME_MENU_DIV = document.getElementById("before-game");
 const GAME_SETTINGS_FORM = document.getElementById("game-settings");
 const IN_GAME_DIV = document.getElementById("in-game");
 const CLOSE_NOW_BUTTON = document.getElementById("stop-game");
+
+const ALL_INGREDIENTS_DIV = document.getElementById("all-ingredients");
 
 
 let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
@@ -455,6 +459,8 @@ class Display {
         this.removeHiddenClass(BEFORE_GAME_MENU_DIV);
         this.addHiddenClass(IN_GAME_DIV);
 
+        this.removeHiddenClass(DAY_INFO_DIV);
+
         this.addHiddenClass(CURRENT_BURGER_DIV);
         this.addHiddenClass(CURRENT_ORDER_DIV);
         this.addHiddenClass(ORDERS_DIV);
@@ -464,10 +470,27 @@ class Display {
         this.removeHiddenClass(IN_GAME_DIV);
         this.addHiddenClass(BEFORE_GAME_MENU_DIV);
 
+        this.addHiddenClass(DAY_INFO_DIV);
+
         this.removeHiddenClass(CURRENT_BURGER_DIV);
         this.removeHiddenClass(CURRENT_ORDER_DIV);
         this.removeHiddenClass(ORDERS_DIV);
     }
 }
 
+class DayInfo {
+    constructor() {
+        const currentDayDiv = document.getElementById("day");
+        currentDayDiv.addEventListener("change", () => {
+            console.log(currentDayDiv.value);
+        });
+
+        ingredients.forEach(ingredient => {
+            ALL_INGREDIENTS_DIV.innerHTML += `<img src="${ingredient.imageUrl}"/>`;
+        });
+    }
+}
+
+
+let dayInfo = new DayInfo();
 Display.displayPreGameMenu();
