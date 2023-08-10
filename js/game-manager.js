@@ -100,15 +100,33 @@ GAME_SETTINGS_FORM.addEventListener('submit', (event) => {
     const day = formData.get('day');
     const duration = timeToSeconds(formData.get('day-duration'));
 
-    game = new Game(duration, playerCount);
+    game = new Game(duration, day ,playerCount);
+    console.log(game);
     game.startGame();
   });
 
+const DAYS_UNTIL_ADD_NEW_INGREDIENT = 3;
+const ADD_RANDOM_INGREDIENT_PERCENTAGE = 0.25;
+function generateNumberOfIngredientsPerBurger(day, playerCount) {
+    let numberOfIngredients = Math.floor((day/DAYS_UNTIL_ADD_NEW_INGREDIENT) + 1.5 + (playerCount/2));
+
+    let randomOffset = Math.round((Math.random() * 2 - 1) * ADD_RANDOM_INGREDIENT_PERCENTAGE * numberOfIngredients);
+    console.log("random offset" + randomOffset);
+
+    numberOfIngredients += randomOffset;
+    return numberOfIngredients;
+}
+
+const MAX_INGREDIENTS_PER_BURGER = 6;
 class Burger {
     constructor(ingredients, size) {
         this.ingredients = ingredients;
         this.burger = [];
         this.hasIngredients = []
+        
+        if (size > MAX_INGREDIENTS_PER_BURGER) {
+            size = MAX_INGREDIENTS_PER_BURGER;
+        }
         this.size = size;
         this.scoreYield = 0;
         this.burgerId = getBurgerId();
@@ -204,7 +222,6 @@ class Burger {
 
     //Game stuff
     setCurrentBurger() {
-        console.log("setCurrentBurger");
         CURRENT_BURGER_DIV.innerHTML = this.generateBurgerHtml();
         this.addSilouhetteToEveryIngredient();
         this.addHiddenClassToEveryIngredient();
@@ -243,12 +260,13 @@ class Burger {
 //Game variables
 const MAX_ORDERS = 4;
 class Game {
-    constructor(duration, playerCount = 1) {
+    constructor(duration, day, playerCount = 1) {
         this.duration = duration; //Game duration in seconds
         this.burgers = [];
         this.completedBurgers = [];
         this.playerCount = playerCount;
         this.intervalId = null;
+        this.day = day;
     
         this.scoreBoardManager = new ScoreBoardManager(this.duration);
 
@@ -256,9 +274,7 @@ class Game {
     }
 
     startGame() {
-        Display.displayInGame();
-
-        console.log("game started");
+        Display.displayInGame();7
 
         this.scoreBoardManager.setScore(this.score);
         this.addOrderIfCan();
@@ -304,18 +320,14 @@ class Game {
     }
     
     generateRandomBurger() {
-        let burger = new Burger(ingredients, 2);
+        let burger = new Burger(ingredients, generateNumberOfIngredientsPerBurger(this.day, this.playerCount));
         return burger;
     }
 
     addOrderIfCan() {
-        console.log("addOrderIfCan");
         if (this.burgers.length < MAX_ORDERS) {
             this.addBurger(this.generateRandomBurger());
             this.updateOrderVisuals();
-        }
-        else {
-            console.log("couldn't add order");
         }
     }
 
@@ -449,5 +461,3 @@ class Display {
         this.addHiddenClass(BEFORE_GAME_MENU_DIV);
     }
 }
-
-Display.displayPreGameMenu();
