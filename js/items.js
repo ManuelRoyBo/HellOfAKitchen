@@ -1,5 +1,5 @@
 export class Item {
-    constructor({ itemName, description, imageUrl, qrCodeId = null, cutEquivalent = null, grilledEquivalent = null, finalFormQrId = null, pointsOnceCompleted = 0}) {
+    constructor({ itemName, description, imageUrl, qrCodeId = null, cutEquivalent = null, grilledEquivalent = null, finalFormQrId = null, pointsOnceCompleted = 0, unlockAtDay = null}) {
       this.itemName = itemName;
       this.description = description;
       this.imageUrl = imageUrl;
@@ -8,6 +8,7 @@ export class Item {
       this.grilledEquivalent = grilledEquivalent;
       this.finalFormQrId = finalFormQrId;
       this.pointsOnceCompleted = pointsOnceCompleted;
+      this.unlockAtDay = unlockAtDay;
     }
 }
   
@@ -16,7 +17,8 @@ const cutLettuce = new Item({
     description: "A piece of cut lettuce.",
     imageUrl: "img/items/lettuce-leaf.svg",
     finalFormQrId: "CL",
-    pointsOnceCompleted: 100
+    pointsOnceCompleted: 100,
+    unlockAtDay: 1
 });
 
 const lettuce = new Item({
@@ -32,7 +34,8 @@ const cutTomato = new Item({
     description: "A piece of cut tomato.",
     imageUrl: "img/items/sliced-tomato.svg",
     finalFormQrId: "CT",
-    pointsOnceCompleted: 100
+    pointsOnceCompleted: 100,
+    unlockAtDay: 1
 });
 
 const tomato = new Item({
@@ -48,7 +51,8 @@ const cookedGroundBeef = new Item({
     description: "Very tasty.",
     imageUrl: "img/items/cooked-ground-beef.jpg",
     finalFormQrId: "CG",
-    pointsOnceCompleted: 200
+    pointsOnceCompleted: 200,
+    unlockAtDay: 3
 });
 
 const groundBeef = new Item({

@@ -15,7 +15,10 @@ let burgerId = 0;
 
 const CLOSED_TEXT = "CLOSED";
 
+/*day info*/
 const DAY_INFO_DIV = document.getElementById("day-informations");
+const DAY_DISPLAY_H1 = document.getElementById("day-display");
+const ALL_INGREDIENTS_DIV = document.getElementById("all-ingredients");
 
 const CURRENT_BURGER_DIV = document.getElementById("current-burger");
 const ORDERS_DIV = document.getElementById("orders");
@@ -33,7 +36,6 @@ const GAME_SETTINGS_FORM = document.getElementById("game-settings");
 const IN_GAME_DIV = document.getElementById("in-game");
 const CLOSE_NOW_BUTTON = document.getElementById("stop-game");
 
-const ALL_INGREDIENTS_DIV = document.getElementById("all-ingredients");
 
 
 let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
@@ -115,10 +117,21 @@ function generateNumberOfIngredientsPerBurger(day, playerCount) {
     let numberOfIngredients = Math.floor((day/DAYS_UNTIL_ADD_NEW_INGREDIENT) + 1.5 + (playerCount/2));
 
     let randomOffset = Math.round((Math.random() * 2 - 1) * ADD_RANDOM_INGREDIENT_PERCENTAGE * numberOfIngredients);
-    console.log("random offset" + randomOffset);
 
     numberOfIngredients += randomOffset;
     return numberOfIngredients;
+}
+
+function addClassToElement(classString, element) {
+    if (!element.classList.contains(classString)) {
+        element.classList.add(classString);
+    }
+}
+
+function removeClassFromElement(classString, element) {
+    if (element.classList.contains(classString)) {
+        element.classList.remove(classString);
+    }
 }
 
 const MAX_INGREDIENTS_PER_BURGER = 6;
@@ -480,14 +493,31 @@ class Display {
 
 class DayInfo {
     constructor() {
+        this.day = 1;
         const currentDayDiv = document.getElementById("day");
         currentDayDiv.addEventListener("change", () => {
-            console.log(currentDayDiv.value);
+            this.day = currentDayDiv.value;
+            this.currentDayUpdate();
         });
 
         ingredients.forEach(ingredient => {
             ALL_INGREDIENTS_DIV.innerHTML += `<img src="${ingredient.imageUrl}"/>`;
         });
+
+        this.currentDayUpdate();
+    }
+
+    currentDayUpdate(){
+        DAY_DISPLAY_H1.textContent = `Day ${this.day}`;
+        
+        for(let i = 0; i < ingredients.length; i++){
+            if(ingredients[i].unlockAtDay <= this.day){
+                removeClassFromElement("silouhette", ALL_INGREDIENTS_DIV.children[i]);
+            }
+            else{
+                addClassToElement("silouhette", ALL_INGREDIENTS_DIV.children[i]);
+            }
+        }
     }
 }
 
