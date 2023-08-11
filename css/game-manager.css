@@ -258,13 +258,22 @@ width: 30%;
 
 #day-informations h1 {
     font-size: 4vw;
-    margin: 10px 0 0 0;
+    margin: 10px 0 -1vw 0;
     text-align: center;
+    font-weight: 600;
 }
 #day-informations h2 {
-    font-size: 2vw;
+    font-size: 3vw;
     margin: 0;
     text-align: center;
+    font-weight: 400;
+}
+
+#day-informations h3 {
+    font-size: 1.5vw;
+    margin: 0 0 -1vw 0;
+    text-align: center;
+    font-weight: 200;
 }
 
 #all-ingredients {

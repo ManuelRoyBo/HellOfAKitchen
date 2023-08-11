@@ -22,6 +22,7 @@ const ALL_INGREDIENTS_DIV = document.getElementById("all-ingredients");
 const TUTORIAL_DIVS = document.getElementsByClassName("tutorial");
 const TUTORIAL_LEFT_ARROW_IMG = document.getElementById("tutorial-left-arrow");
 const TUTORIAL_RIGHT_ARROW_IMG = document.getElementById("tutorial-right-arrow");
+const HIGHSCORE_H1 = document.getElementById("highscore-for-day");
 
 const CURRENT_BURGER_DIV = document.getElementById("current-burger");
 const ORDERS_DIV = document.getElementById("orders");
@@ -449,6 +450,13 @@ class ScoreBoardManager {
     endGame() {
         clearInterval(this.intervalId);
         this.updateTimerVisuals();
+
+        //set score to local storage if it is higher than the previous highscore
+        let highscore = localStorage.getItem("highscore") || 0;
+        if (this.score > highscore) {
+            localStorage.setItem("highscore", this.score);
+        }
+
         const event = new CustomEvent('gameFinished', { detail: this.score });
         document.dispatchEvent(event);
     }
@@ -556,6 +564,7 @@ class DayInfo {
         }
         this.findMaxPage();
         this.updatePage();
+        this.updateHighscore();
         
     }
 
@@ -609,6 +618,11 @@ class DayInfo {
             }
         }
         this.displayButtons();
+    }
+
+    updateHighscore() {
+        let highscore = localStorage.getItem("highscore") || 0;
+        HIGHSCORE_H1.textContent = `Highscore: ${highscore}`;
     }
 
 }
