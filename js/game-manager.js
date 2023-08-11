@@ -2,7 +2,7 @@
 let scanner
 let game
 
-const orderInterval = 5; //in seconds
+const orderInterval = 20; //in seconds
 
 import {items} from "./items.js";
 //every item from items where finalQrCodeId is not null
@@ -40,7 +40,10 @@ const GAME_SETTINGS_FORM = document.getElementById("game-settings");
 const IN_GAME_DIV = document.getElementById("in-game");
 const CLOSE_NOW_BUTTON = document.getElementById("stop-game");
 
-
+/*audio*/
+const BELL_SFX = new Audio("sound/bell.mp3");
+const REGISTER_SFX = new Audio("sound/register.mp3");
+const GOOD_ITEM_SFX = new Audio("sound/good-item.wav");
 
 let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
     let minEdgePercentage = 0.90; // 70%
@@ -200,6 +203,7 @@ class Burger {
     }
 
     addCommingOrder() {
+        BELL_SFX.play();
         const ordersDiv = document.getElementById("orders");
         ordersDiv.insertAdjacentHTML("beforeend", this.generateCommingOrderHtml());
     }
@@ -264,6 +268,7 @@ class Burger {
                 this.burgerCompleted();
             }
             else {
+                GOOD_ITEM_SFX.play();
                 this.nextIngredientToAddId++;
                 this.showNextIngredient();
             }
@@ -273,6 +278,7 @@ class Burger {
         return false;
     }
     burgerCompleted() {
+        REGISTER_SFX.play();
         const event = new CustomEvent('burgerCompleted', { detail: this });
         document.dispatchEvent(event);
     }
