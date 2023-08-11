@@ -19,6 +19,9 @@ const CLOSED_TEXT = "CLOSED";
 const DAY_INFO_DIV = document.getElementById("day-informations");
 const DAY_DISPLAY_H1 = document.getElementById("day-display");
 const ALL_INGREDIENTS_DIV = document.getElementById("all-ingredients");
+const TUTORIAL_DIVS = document.getElementsByClassName("tutorial");
+const TUTORIAL_LEFT_ARROW_IMG = document.getElementById("tutorial-left-arrow");
+const TUTORIAL_RIGHT_ARROW_IMG = document.getElementById("tutorial-right-arrow");
 
 const CURRENT_BURGER_DIV = document.getElementById("current-burger");
 const ORDERS_DIV = document.getElementById("orders");
@@ -493,11 +496,44 @@ class Display {
 
 class DayInfo {
     constructor() {
+
+        this.tutorials = [];
+
+        class Tutorial {
+            constructor(div, day) {
+                this.day = day;
+                this.div = div;
+            }
+
+            hide() {
+                Display.addHiddenClass(this.div);
+            }
+
+            show() {
+                Display.removeHiddenClass(this.div);
+            }
+        }
+
+        for (let tutorialDiv of TUTORIAL_DIVS) {
+            const day = tutorialDiv.id.replace(/tutorial-day-/g, "");
+            this.tutorials.push(new Tutorial(tutorialDiv, day));
+        }
+
         this.day = 1;
+        this.page = 1;
+        this.maxPage = 1;
         const currentDayDiv = document.getElementById("day");
         currentDayDiv.addEventListener("change", () => {
             this.day = currentDayDiv.value;
             this.currentDayUpdate();
+        });
+
+        TUTORIAL_LEFT_ARROW_IMG.addEventListener("click", () => {
+            this.previousPage();
+        });
+
+        TUTORIAL_RIGHT_ARROW_IMG.addEventListener("click", () => {
+            this.nextPage();
         });
 
         ingredients.forEach(ingredient => {
@@ -518,7 +554,63 @@ class DayInfo {
                 addClassToElement("silouhette", ALL_INGREDIENTS_DIV.children[i]);
             }
         }
+        this.findMaxPage();
+        this.updatePage();
+        
     }
+
+    findMaxPage() {
+        this.maxPage = 0;
+        this.tutorials.forEach(tutorial => {
+            if (tutorial.day <= this.day) {
+                this.maxPage++;
+            }
+        });
+    }
+
+    displayButtons() {
+        if (this.page <= 1) {
+            Display.addHiddenClass(TUTORIAL_LEFT_ARROW_IMG);
+        }
+        else {
+            Display.removeHiddenClass(TUTORIAL_LEFT_ARROW_IMG);
+        }
+
+        if (this.page >= this.maxPage) {
+            Display.addHiddenClass(TUTORIAL_RIGHT_ARROW_IMG);
+        }
+        else {
+            Display.removeHiddenClass(TUTORIAL_RIGHT_ARROW_IMG);
+        }
+    }
+
+    nextPage() {
+        if (this.page < this.maxPage) {
+            this.page++;
+            this.updatePage();
+        }
+    }
+
+    previousPage() {
+        if (this.page > 1) {
+            this.page--;
+            this.updatePage();
+        }
+    }
+
+    updatePage() {
+        //hide all tutorials
+        for (let i = 0; i < this.tutorials.length; i++) {
+            if (i+1 == this.page){
+                this.tutorials[i].show();
+            }
+            else{
+                this.tutorials[i].hide();
+            }
+        }
+        this.displayButtons();
+    }
+
 }
 
 

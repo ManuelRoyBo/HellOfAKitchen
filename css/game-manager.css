@@ -1,6 +1,7 @@
 :root {
     --white: #f9f9f9;
     --dark-gray: #353535;
+    --blue: #405cf5;
 }
 
 body {
@@ -250,6 +251,9 @@ width: 30%;
 
     margin: 50px 50px 50px 0px;
     border-radius: 50px;
+
+    display: flex;
+    flex-direction: column;
 }
 
 #day-informations h1 {
@@ -275,3 +279,37 @@ width: 30%;
     width: auto;
     height: 10vh;
   }
+
+/*turorials*/
+#tutorials {
+    position: relative;
+    height: auto;
+    width: 100%;
+    flex-grow: 1;
+
+    display: flex;
+}
+
+.tutorial {
+    flex-grow: 1;
+    margin: auto;
+}
+
+/*Arrows*/
+.arrow {
+    padding: 10px;
+    width: 20px;
+    height: 80px;
+    cursor: pointer;
+    background-color: var(--blue);
+    border-radius: 6px;
+    margin: auto 10px ;
+}
+
+#tutorial-left-arrow {
+    left: 0;
+}
+#tutorial-right-arrow{
+    right: 0;
+    transform: scaleX(-1);
+}
