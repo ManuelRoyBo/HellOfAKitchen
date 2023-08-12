@@ -145,7 +145,7 @@ main {
     filter: brightness(20%);
 }
 
-/*Orders animations*/
+/*animations*/
 @keyframes comming-order-appear {
     0% {
         transform: translateX(500%);
@@ -171,6 +171,35 @@ main {
     }
     100% {
         transform: translateY(0%) scaleY(-1);
+    }
+}
+
+@keyframes drop {
+    0% {
+      transform: perspective(1000px) rotateX(-90deg) translateY(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: perspective(1000px) rotateX(0deg) translateY(0%);
+      opacity: 1;
+    }
+  }  
+
+@keyframes party {
+    0% {
+        color: red;
+    }
+    25% {
+        color: orange;
+    }
+    50% {
+        color: green;
+    }
+    75% {
+        color: blue;
+    }
+    100% {
+        color: purple;
     }
 }
 
@@ -241,7 +270,8 @@ width: 30%;
 }
 
 /*day informations*/
-#day-informations {
+#day-informations,
+#after-game-information {
     background-color: var(--white);
 
     grid-column-start: 2;
@@ -322,3 +352,66 @@ width: 30%;
     right: 0;
     transform: scaleX(-1);
 }
+
+/*End game info*/
+#after-game-information > * {
+    flex-grow: 1;
+    animation: drop 1s ease-in-out;
+    animation-delay: calc(1s * var(--index));
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+  
+  
+
+#after-game-information > *:nth-child(1) {
+    --index: 1;
+}
+#after-game-information > *:nth-child(2) {
+--index: 2;
+}
+#after-game-information > *:nth-child(3) {
+--index: 3;
+}
+#after-game-information > *:nth-child(4) {
+--index: 4;
+}
+#after-game-information > *:nth-child(5) {
+--index: 5;
+}
+#after-game-information > *:nth-child(6) {
+--index: 6;
+}
+
+#after-game-information h1,
+#after-game-information h2,
+#after-game-information h3 {
+    text-align: center;
+    margin: auto;
+}
+
+#after-game-information h1 {
+    font-size: 8vw;
+    font-weight: 600;
+}
+
+#after-game-information h2 {
+    font-size: 5vw;
+    font-weight: 400;
+}
+
+#after-game-information h3 {
+    font-size: 3vw;
+    font-weight: 200;
+}
+
+#after-game-information button {
+    margin: 4vh 10px;
+    width: auto;
+    height: auto;;
+}
+
+.party-anim {
+    animation: party 1.2s ease-in-out infinite;
+}
+

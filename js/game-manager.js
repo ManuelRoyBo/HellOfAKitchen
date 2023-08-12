@@ -3,6 +3,7 @@ let scanner
 let game
 
 const orderInterval = 20; //in seconds
+const NEW_HIGHSCORE_HTML = `<b class="party-anim"> NEW HIGHSCORE!</b>`;
 
 import {items} from "./items.js";
 //every item from items where finalQrCodeId is not null
@@ -23,6 +24,13 @@ const TUTORIAL_DIVS = document.getElementsByClassName("tutorial");
 const TUTORIAL_LEFT_ARROW_IMG = document.getElementById("tutorial-left-arrow");
 const TUTORIAL_RIGHT_ARROW_IMG = document.getElementById("tutorial-right-arrow");
 const HIGHSCORE_H1 = document.getElementById("highscore-for-day");
+
+/*After game infos*/
+const AFTER_GAME_DIV = document.getElementById("after-game-information");
+const AFTER_GAME_DAY_H1 = document.getElementById("after-game-day");
+const AFTER_GAME_SCORE_H1 = document.getElementById("after-game-score");
+const AFTER_GAME_HIGHSCORE_H1 = document.getElementById("after-game-highscore");
+const AFTER_GAME_NEXT_BUTTON = document.getElementById("after-game-next-button");
 
 const CURRENT_BURGER_DIV = document.getElementById("current-burger");
 const ORDERS_DIV = document.getElementById("orders");
@@ -140,6 +148,56 @@ function removeClassFromElement(classString, element) {
         element.classList.remove(classString);
     }
 }
+
+// Read from localStorage and convert to Highscore Class list
+// Read from localStorage and convert to Highscore Class
+function readHighscoreFromLocalStorage(day) {
+    const highscores = JSON.parse(localStorage.getItem('highscores')) || [];
+    const existingHighscore = highscores.find(highscore => highscore.day === day);
+    if (existingHighscore) {
+      return new Highscore(existingHighscore.day, existingHighscore.score);
+    } else {
+      const newHighscore = new Highscore(day, 0);
+      highscores.push(newHighscore);
+      localStorage.setItem('highscores', JSON.stringify(highscores));
+      return newHighscore;
+    }
+  }
+
+// Write Highscore Class list to localStorage
+// Write Highscore Class list to localStorage
+function writeHighscoreToLocalStorage(score, day) {
+    const highscores = JSON.parse(localStorage.getItem('highscores')) || [];
+    //Get the highscore for the current day
+    const existingHighscore = highscores.find(highscore => highscore.day === day);
+    if (existingHighscore) {
+        if (score > existingHighscore.score) {
+            existingHighscore.score = score;
+        }
+    } 
+    else {
+        const newHighscore = new Highscore(day, score);
+        highscores.push(newHighscore);
+    }
+    localStorage.setItem('highscores', JSON.stringify(highscores));
+}
+
+function updateEndOfGameScreen(day, score, highscore, isNewHighscore) {
+    
+    AFTER_GAME_DAY_H1.innerHTML = `Day ${day}`;
+    AFTER_GAME_SCORE_H1.innerHTML = `Score: ${score}`;
+
+    let highscoreText = `highscore: ${highscore}`;
+    if (isNewHighscore == true) {
+        highscoreText += NEW_HIGHSCORE_HTML;
+    }
+
+    AFTER_GAME_HIGHSCORE_H1.innerHTML = highscoreText;
+}
+
+AFTER_GAME_NEXT_BUTTON.addEventListener("click", () => {
+    Display.displayPreGameMenu();
+});
 
 const MAX_INGREDIENTS_PER_BURGER = 6;
 class Burger {
@@ -293,9 +351,9 @@ class Game {
         this.completedBurgers = [];
         this.playerCount = playerCount;
         this.intervalId = null;
-        this.day = day;
+        this.day = parseInt(day);
     
-        this.scoreBoardManager = new ScoreBoardManager(this.duration);
+        this.scoreBoardManager = new ScoreBoardManager(this.duration, this.day);
 
         this.score = 0;
     }
@@ -364,8 +422,7 @@ class Game {
         //removes all burgers
         this.burgers = [];
         this.updateOrderVisuals();
-
-        Display.displayPreGameMenu();
+        Display.displayAfterGame();
     }
 
     updateOrderVisuals() {
@@ -400,15 +457,14 @@ class Game {
 }
 
 class ScoreBoardManager {
-    constructor(gameDuration) {
+    constructor(gameDuration, day) {
         this.score = 0;
         this.gameDuration = gameDuration;
         this.timeLeft = 0;
+        this.day = day;
 
 
-        CLOSE_NOW_BUTTON.addEventListener("click", () => {
-            this.endGame();
-        });
+        CLOSE_NOW_BUTTON.addEventListener("click", this.endGame.bind(this), {once: true});
     }
 
     setScore(score) {
@@ -454,14 +510,18 @@ class ScoreBoardManager {
     }
 
     endGame() {
+
         clearInterval(this.intervalId);
         this.updateTimerVisuals();
 
-        //set score to local storage if it is higher than the previous highscore
-        let highscore = localStorage.getItem("highscore") || 0;
-        if (this.score > highscore) {
-            localStorage.setItem("highscore", this.score);
+        let highscore = readHighscoreFromLocalStorage(this.day);
+        updateEndOfGameScreen(this.day, this.score, highscore.score, false);
+        if (this.score > highscore.score) {
+            highscore.score = this.score;
+            writeHighscoreToLocalStorage(highscore.score, this.day);
+            updateEndOfGameScreen(this.day, this.score, highscore.score, true);
         }
+        
 
         const event = new CustomEvent('gameFinished', { detail: this.score });
         document.dispatchEvent(event);
@@ -488,6 +548,7 @@ class Display {
     static displayPreGameMenu() {
         this.removeHiddenClass(BEFORE_GAME_MENU_DIV);
         this.addHiddenClass(IN_GAME_DIV);
+        this.addHiddenClass(AFTER_GAME_DIV);
 
         this.removeHiddenClass(DAY_INFO_DIV);
 
@@ -501,6 +562,7 @@ class Display {
     static displayInGame() {
         this.removeHiddenClass(IN_GAME_DIV);
         this.addHiddenClass(BEFORE_GAME_MENU_DIV);
+        this.addHiddenClass(AFTER_GAME_DIV);
 
         this.addHiddenClass(DAY_INFO_DIV);
 
@@ -508,6 +570,22 @@ class Display {
         this.removeHiddenClass(CURRENT_ORDER_DIV);
         this.removeHiddenClass(ORDERS_DIV);
     }
+
+    static displayAfterGame() {
+        
+        this.addHiddenClass(IN_GAME_DIV);
+        this.addHiddenClass(BEFORE_GAME_MENU_DIV);
+
+        this.addHiddenClass(DAY_INFO_DIV);
+
+        this.addHiddenClass(CURRENT_BURGER_DIV);
+        this.addHiddenClass(CURRENT_ORDER_DIV);
+        this.addHiddenClass(ORDERS_DIV);
+
+        this.removeHiddenClass(AFTER_GAME_DIV);
+    }
+
+
 }
 
 class DayInfo {
@@ -629,12 +707,21 @@ class DayInfo {
     }
 
     updateHighscore() {
-        let highscore = localStorage.getItem("highscore") || 0;
-        HIGHSCORE_H1.textContent = `Highscore: ${highscore}`;
+        let highscore = readHighscoreFromLocalStorage(parseInt(this.day));
+        HIGHSCORE_H1.textContent = `Highscore: ${highscore.score}`;
     }
 
 }
 
+class Highscore {
+    constructor(day, score) {
+        if (typeof day !== 'number' || typeof score !== 'number') {
+            throw new Error('Day and score must be numbers');
+        }
+        this.day = day;
+        this.score = score;
+    }
+}
 
-let dayInfo = new DayInfo();
+const dayInfo = new DayInfo();
 Display.displayPreGameMenu();
