@@ -494,6 +494,8 @@ class Display {
         this.addHiddenClass(CURRENT_BURGER_DIV);
         this.addHiddenClass(CURRENT_ORDER_DIV);
         this.addHiddenClass(ORDERS_DIV);
+
+        dayInfo.currentDayUpdate();
     }
 
     static displayInGame() {
